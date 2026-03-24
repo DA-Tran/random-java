@@ -1,4 +1,4 @@
-# 10 Visual Interactive Projects in Java/JS/Node
+# random-java: Collection of Visual Interactive Projects (Java/JS/Node)\n\nThis folder contains multiple game/visualizer projects following **console_text + interactive_Swing** pattern.\n\n**Root-level**: Main README (project list), TODO.md (progress), .gitignore\n**openJdk-25/**: Local JDK25 for Java builds (export PATH="../openJdk-25/bin:$PATH")\n\n## Java Game Folders\n
 
 ## Overview
 Portfolio of 10 visual projects: Java console→GUI upgrades (Swing native), vanilla JS games/visualizers, Node Slack bot.

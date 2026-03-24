@@ -1,36 +1,33 @@
 
-# Chess Game (Java Console)
+# chess-game/: Full Chess (Console Text + Swing GUI)\n\n**Purpose**: Complete chess engine - algebraic moves, piece logic, check/checkmate detection, legal move validation.\n\n**Files**:\n- **Console**: ChessGame_text.java (e2 e4 input/print board)\n- **Swing GUI**: ChessGame_interactive.java + ChessSquareComponent.java (click drag pieces, green legal moves)\n- **OOP**: Piece.java (Pawn/Rook/Knight/Bishop/Queen/King), ChessBoard.java, Position.java\n\n**Run Console**:\n```bash\ncd chess-game\nexport PATH=\"../openJdk-25/bin:$PATH\"\njavac *.java\njava ChessGame_text\n```\n**Run GUI**:\njava ChessGame_interactive\n\n**Features**: Unicode board, check alerts, checkmate, reset.
 
 ## Files
-- ChessGame.java - Board, moves, print (basic, no full rules validation)
+- ChessGame_text.java: Console text version (e2 e4 moves, basic)
+- ChessGame_interactive.java: Full Swing GUI + logic (pieces, check/checkmate, legal moves highlight)
+- ChessSquareComponent.java: Board squares
+- Piece* classes, ChessBoard.java, ChessGame.java (logic)
 
-## Run Console
+## Run Console Text
 ```bash
 export PATH="../openJdk-25/bin:$PATH"
 cd chess-game
-javac ChessGame.java
-java ChessGame
+javac *.java
+java ChessGame_text
 ```
 
-## Run Swing GUI (Legacy)
+## Run Interactive Swing GUI (Click pieces)
 ```bash
 export PATH="../openJdk-25/bin:$PATH"
 cd chess-game
-javac ChessBoardGUI.java
-java ChessBoardGUI
+javac *.java
+java ChessGame_interactive
 ```
 
-## Run JavaFX Interactive (Recommended)
-```bash
-export PATH="../openJdk-25/bin:$PATH"
-cd chess-game/javafx
-javac --module-path "../../openJdk-25/jmods" --add-modules javafx.controls,javafx.graphics,javafx.base *.java
-java --module-path "../../openJdk-25/jmods" --add-modules javafx.controls,javafx.graphics,javafx.base chess_interactive
-```
+**Features**: Unicode pieces, select piece (green highlights legal moves), check alerts, checkmate dialog, reset menu.
+**Removed**: Broken JavaFX.
 
-**chess_interactive.java**: Click-to-select/move, turn indicator, Unicode pieces, smooth board.
+Board rows 0-7 top-black bottom-white, columns a-h left-right.
 
-**Console**: Move format: e2 e4 (basic demo).
 
 
 
