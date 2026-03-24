@@ -1,0 +1,3 @@
+# Random Number and Color Generator (JavaScript)
+
+Coming soon...

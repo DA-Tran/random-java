@@ -1,0 +1,13 @@
+{
+  "name": "two-truths-lie-slack-bot",
+  "version": "1.0.0",
+  "description": "Slack bot for 2 truths 1 lie game",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.17.1"
+  }
+}
+

@@ -1,0 +1,13 @@
+*.class
+*.log
+node_modules/
+dist/
+build/
+*.jar
+.DS_Store
+Thumbs.db
+openJdk-25/
+*.iml
+.vscode/
+target/
+
