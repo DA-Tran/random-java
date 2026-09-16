@@ -1,0 +1,22 @@
+# Git stores text with LF and this keeps it that way regardless of who checks
+# the repository out. Without it, a Windows clone rewrites every file to CRLF
+# on checkout and then reports all of them as modified, which buries real
+# changes under thousands of lines of line-ending churn.
+* text=auto eol=lf
+
+# Shell scripts must keep LF or they will not run: a CRLF shebang line makes
+# the kernel look for an interpreter whose name ends in a carriage return.
+*.sh text eol=lf
+
+# PowerShell is happy either way, but CRLF is what Windows tooling expects.
+*.ps1 text eol=crlf
+
+# Not text, so never touch the bytes.
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.jmod binary
+*.zip binary
+*.class binary
