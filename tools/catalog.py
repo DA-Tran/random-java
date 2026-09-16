@@ -669,7 +669,7 @@ PROJECTS = [
      "Fill a grid with two symbols, never three in a row, balanced and all rows distinct."),
     (240, "skyscrapers", "GRID", True,
      "Place building heights so each edge clue counts the skyline visible from it."),
-    (241, "shikaku", "GRID", False,
+    (241, "shikaku", "GRID", True,
      "Cut a grid into rectangles, each containing one number equal to its area."),
     (242, "magic-square", "GRID", False,
      "Arrange numbers so every row, column and diagonal adds to the same total."),

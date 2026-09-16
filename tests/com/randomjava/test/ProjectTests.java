@@ -42,6 +42,7 @@ import com.randomjava.projects.futoshiki.Futoshiki;
 import com.randomjava.projects.hitori.Hitori;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
+import com.randomjava.projects.shikaku.Shikaku;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
 import com.randomjava.projects.sokoban.Sokoban;
 import com.randomjava.projects.mastermind.Mastermind;
@@ -2342,6 +2343,108 @@ final class ProjectTests {
             t.check("an unreachable board is refused rather than guessed",
                     corner.solvable() || refused(corner::applySolution));
             t.check("an off-board press is refused", refused(() -> l.press(999)));
+        });
+
+        h.group("241 Shikaku", t -> {
+            Shikaku puzzle = new Shikaku(new java.util.Random(2));
+            puzzle.generate(7);
+
+            // Every candidate rectangle has to be a legal home for its clue:
+            // the right area, covering its own number, and covering no other.
+            // That last filter is what keeps the candidate lists small.
+            int badArea = 0;
+            int missesOwnClue = 0;
+            int swallowsAnother = 0;
+            int candidates = 0;
+            for (int row = 0; row < puzzle.size(); row++) {
+                for (int column = 0; column < puzzle.size(); column++) {
+                    int clue = puzzle.clue(row, column);
+                    if (clue == 0) {
+                        continue;
+                    }
+                    for (int[] rectangle : puzzle.candidatesFor(row, column)) {
+                        candidates++;
+                        if (rectangle[2] * rectangle[3] != clue) {
+                            badArea++;
+                        }
+                        if (row < rectangle[0] || row >= rectangle[0] + rectangle[2]
+                                || column < rectangle[1]
+                                || column >= rectangle[1] + rectangle[3]) {
+                            missesOwnClue++;
+                        }
+                        for (int r = rectangle[0]; r < rectangle[0] + rectangle[2]; r++) {
+                            for (int c = rectangle[1]; c < rectangle[1] + rectangle[3]; c++) {
+                                if (puzzle.clue(r, c) != 0 && (r != row || c != column)) {
+                                    swallowsAnother++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            t.check("there are candidate rectangles to choose from", candidates > 0);
+            t.equal("every candidate has the area its clue demands", 0, badArea);
+            t.equal("and covers the clue it belongs to", 0, missesOwnClue);
+            t.equal("and never swallows a second clue", 0, swallowsAnother);
+
+            // The answer has to be a genuine partition: areas summing to the
+            // board, one clue per rectangle, and no cell claimed twice.
+            int notUnique = 0;
+            int partitionFaults = 0;
+            for (int side = 4; side <= 8; side += 2) {
+                for (int seed = 0; seed < 3; seed++) {
+                    Shikaku board = new Shikaku(new java.util.Random(seed));
+                    board.generate(side);
+                    if (board.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    int[][] owner = new int[side][side];
+                    for (int[] line : owner) {
+                        java.util.Arrays.fill(line, -1);
+                    }
+                    int index = 0;
+                    int area = 0;
+                    for (int[] rectangle : board.answer()) {
+                        int clues = 0;
+                        for (int r = rectangle[0]; r < rectangle[0] + rectangle[2]; r++) {
+                            for (int c = rectangle[1]; c < rectangle[1] + rectangle[3]; c++) {
+                                if (owner[r][c] != -1) {
+                                    partitionFaults++;   // two rectangles, one cell
+                                }
+                                owner[r][c] = index;
+                                if (board.clue(r, c) != 0) {
+                                    clues++;
+                                    if (board.clue(r, c) != rectangle[2] * rectangle[3]) {
+                                        partitionFaults++;
+                                    }
+                                }
+                            }
+                        }
+                        if (clues != 1) {
+                            partitionFaults++;
+                        }
+                        area += rectangle[2] * rectangle[3];
+                        index++;
+                    }
+                    if (area != side * side) {
+                        partitionFaults++;
+                    }
+                    for (int[] line : owner) {
+                        for (int cell : line) {
+                            if (cell < 0) {
+                                partitionFaults++;   // a cell nobody claimed
+                            }
+                        }
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one cut", 0, notUnique);
+            t.equal("and its answer really does partition the board", 0, partitionFaults);
+
+            t.check("an unplayable size is refused", refused(() -> puzzle.generate(2)));
+            t.check("the api generates", ok(call("shikaku", "generate", "size", 5)));
+            t.check("the api reveals one rectangle", ok(call("shikaku", "hint")));
+            t.check("the api solves", ok(call("shikaku", "solve")));
         });
 
         h.group("238 Hitori", t -> {
