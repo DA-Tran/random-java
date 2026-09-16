@@ -679,7 +679,7 @@ PROJECTS = [
      "Work out who owns the zebra from a list of constraints, by elimination."),
     (245, "river-crossing", "GRID", False,
      "Get everyone across without leaving the wrong pair alone together."),
-    (246, "water-jug", "TOOL", False,
+    (246, "water-jug", "TOOL", True,
      "Measure an exact amount using jugs that have no markings."),
     (247, "rush-hour", "GRID", False,
      "Slide blocking cars aside to drive the red car out of the jam."),

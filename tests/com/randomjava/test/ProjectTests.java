@@ -49,6 +49,7 @@ import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.shikaku.Shikaku;
+import com.randomjava.projects.waterjug.WaterJug;
 import com.randomjava.projects.slitherlink.Slitherlink;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
 import com.randomjava.projects.sokoban.Sokoban;
@@ -3146,6 +3147,50 @@ final class ProjectTests {
             t.check("a click on a clue is ignored rather than refused",
                     ok(call("skyscrapers", "place", "row", 0, "col", 0)));
             t.check("the api solves", ok(call("skyscrapers", "solve")));
+        });
+
+        h.group("246 Water Jug", t -> {
+            // Every move keeps the contents an integer combination of the two
+            // sizes, so by Bezout the reachable amounts are exactly the
+            // multiples of the gcd, capped by the larger jug.
+            t.check("the Die Hard jugs can measure four",
+                    WaterJug.reachable(5, 3, 4));
+            t.check("but four and six can never measure five",
+                    !WaterJug.reachable(4, 6, 5));
+            t.check("because their gcd is two", WaterJug.gcd(4, 6) == 2);
+            t.check("nothing larger than the bigger jug is reachable",
+                    !WaterJug.reachable(5, 3, 6));
+
+            // The claim is strong enough to check exhaustively: the arithmetic
+            // rule and an actual search must agree on every instance.
+            int disagreements = 0;
+            for (int a = 1; a <= 12; a++) {
+                for (int b = 1; b <= 12; b++) {
+                    for (int target = 1; target <= Math.max(a, b); target++) {
+                        boolean byGcd = WaterJug.reachable(a, b, target);
+                        boolean bySearch = WaterJug.solve(a, b, target) != null;
+                        if (byGcd != bySearch) {
+                            disagreements++;
+                        }
+                    }
+                }
+            }
+            t.equal("over every pair of jugs up to twelve, the gcd rule and the "
+                    + "search agree exactly", 0, disagreements);
+
+            // The search returns a shortest route, and it really is a route.
+            List<String> steps = WaterJug.solve(5, 3, 4);
+            t.check("there is a way to measure four", steps != null);
+            t.equal("and the shortest takes six moves", 6, steps == null ? -1 : steps.size());
+            t.check("the last move leaves four in a jug",
+                    steps != null && steps.get(steps.size() - 1).contains("4"));
+            t.equal("filling a jug that is already the target takes one move",
+                    1, WaterJug.solve(5, 3, 5).size());
+            t.check("an unreachable target has no route", WaterJug.solve(4, 6, 5) == null);
+
+            t.check("the api computes", ok(call("water-jug", "compute", "input", "5 3 4")));
+            t.check("and reports an impossible one without throwing",
+                    ok(call("water-jug", "compute", "input", "4 6 5")));
         });
 
         h.group("243 Cryptarithm", t -> {

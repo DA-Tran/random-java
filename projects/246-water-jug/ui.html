@@ -1,10 +1,14 @@
 <div class="card">
   <h2>Input</h2>
-  <p class="hint">Measure an exact amount using jugs that have no markings.</p>
+  <p class="hint">
+    Two jugs with no markings, a tap and a drain. Give the two sizes and the
+    amount you want, like <code>5 3 4</code>. Whether it is possible at all is
+    decided by the greatest common divisor, not by searching.
+  </p>
   <div class="row">
     <label class="field">
       <span>Input</span>
-      <input data-field="input" placeholder="type something" autocomplete="off">
+      <input data-field="input" placeholder="5 3 4" value="5 3 4" autocomplete="off">
     </label>
     <div class="tight"><button data-action="compute" data-primary>Run</button></div>
   </div>

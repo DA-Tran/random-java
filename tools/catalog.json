@@ -2701,7 +2701,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "TOOL",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Measure an exact amount using jugs that have no markings.",
     "stack": ""
   },
