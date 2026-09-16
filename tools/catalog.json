@@ -2745,7 +2745,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Fit seven flat shapes together to match a silhouette exactly.",
     "stack": ""
   },

@@ -687,7 +687,7 @@ PROJECTS = [
      "Move a knight to every square on the board exactly once."),
     (249, "word-search-generator", "GRID", True,
      "Hide a word list in a grid of letters, then solve it back."),
-    (250, "tangram", "GRID", False,
+    (250, "tangram", "GRID", True,
      "Fit seven flat shapes together to match a silhouette exactly."),
     (251, "mate-in-n", "GRID", True,
      "Search a chess position for a forced checkmate in a given number of moves."),

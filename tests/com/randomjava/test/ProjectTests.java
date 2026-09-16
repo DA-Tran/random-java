@@ -59,6 +59,7 @@ import com.randomjava.projects.wordsearchgenerator.WordSearchGenerator;
 import com.randomjava.projects.slitherlink.Slitherlink;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
 import com.randomjava.projects.sokoban.Sokoban;
+import com.randomjava.projects.tangram.Tangram;
 import com.randomjava.projects.mastermind.Mastermind;
 import com.randomjava.projects.mastermind.Mastermind.Score;
 
@@ -3224,6 +3225,61 @@ final class ProjectTests {
             t.check("the api generates", ok(call("word-search-generator", "generate",
                     "size", 12)));
             t.check("the api solves", ok(call("word-search-generator", "solve")));
+        });
+
+        h.group("250 Tangram", t -> {
+            // The pieces are 45-degree triangles, so they do not sit on a
+            // square lattice. Cutting each cell along both diagonals into four
+            // micro-triangles is what makes them representable exactly - and
+            // the areas are the check that the polygons really are the tangram
+            // pieces rather than something that merely fits.
+            t.equal("a large triangle is a quarter of the square",
+                    16, Tangram.areaOf(0));
+            t.equal("so is the other one", 16, Tangram.areaOf(1));
+            t.equal("the medium triangle is half that", 8, Tangram.areaOf(2));
+            t.equal("the square piece likewise", 8, Tangram.areaOf(3));
+            t.equal("and the parallelogram", 8, Tangram.areaOf(4));
+            t.equal("a small triangle is half again", 4, Tangram.areaOf(5));
+            t.equal("as is the second", 4, Tangram.areaOf(6));
+
+            int total = 0;
+            for (int piece = 0; piece < 7; piece++) {
+                total += Tangram.areaOf(piece);
+                t.check(Tangram.PIECE_NAMES[piece] + " has somewhere to go",
+                        !Tangram.placements(piece).isEmpty());
+            }
+            t.equal("the seven pieces account for the whole square exactly",
+                    Tangram.SIDE * Tangram.SIDE * 4, total);
+
+            // Tangram is by definition a dissection of the square, so a solver
+            // with correct pieces must be able to tile a plain square. One
+            // with subtly wrong pieces would tile other things convincingly
+            // but fail this.
+            Tangram puzzle = new Tangram();
+            t.check("the seven pieces tile the square", puzzle.solve());
+
+            int[] owned = new int[7];
+            int uncovered = 0;
+            for (int triangle = 0; triangle < Tangram.SIDE * Tangram.SIDE * 4; triangle++) {
+                int piece = puzzle.ownerOf(triangle);
+                if (piece < 0) {
+                    uncovered++;
+                } else {
+                    owned[piece]++;
+                }
+            }
+            t.equal("leaving nothing uncovered", 0, uncovered);
+            int wrongSize = 0;
+            for (int piece = 0; piece < 7; piece++) {
+                if (owned[piece] != Tangram.areaOf(piece)) {
+                    wrongSize++;
+                }
+            }
+            t.equal("and every piece used exactly once, at its own size",
+                    0, wrongSize);
+
+            t.check("the api clears", ok(call("tangram", "generate")));
+            t.check("the api fits the pieces", ok(call("tangram", "solve")));
         });
 
         h.group("251 Mate In N", t -> {
