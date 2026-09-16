@@ -7,7 +7,7 @@
 | Category | Logic and Puzzle Games |
 | Difficulty | Intermediate |
 | Shape | GRID |
-| Status | scaffold |
+| Status | implemented |
 | Slug | `hashiwokakero` |
 
 
@@ -34,7 +34,7 @@ Direct link once the hub is up: <http://localhost:8080/p/hashiwokakero/>
 
 ## What to implement
 
-`generate(int size)`, `step()` and `solve()` own the board. The renderers are generic.
+Already implemented. Read the source for how it works.
 
 Both front ends call the same methods, so there is nothing to keep in sync:
 implement once and the terminal and the browser both pick it up.

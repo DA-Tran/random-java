@@ -2591,7 +2591,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Join islands with bridges so every island has its count and all connect.",
     "stack": ""
   },

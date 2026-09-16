@@ -1,14 +1,20 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Join islands with bridges so every island has its count and all connect.</p>
+  <p class="hint">
+    Each number is how many bridge ends that island needs. Bridges run straight
+    across or down, never cross each other, and at most two join any pair. When
+    you are done every island must be satisfied and all of them joined into one
+    group. Click the water between two islands to lay a bridge, again for a
+    double, again to take it away.
+  </p>
   <div class="row">
     <label class="field">
       <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <input data-field="size" type="number" value="7" min="5" max="9">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
@@ -17,3 +23,18 @@
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    // The server works out which link runs through that water, and ignores a
+    // click that is not on one.
+    RJ.send('toggle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

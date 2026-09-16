@@ -40,6 +40,7 @@ import com.randomjava.projects.lightsout.LightsOut;
 import com.randomjava.projects.magicsquare.MagicSquare;
 import com.randomjava.projects.binarypuzzle.BinaryPuzzle;
 import com.randomjava.projects.futoshiki.Futoshiki;
+import com.randomjava.projects.hashiwokakero.Hashiwokakero;
 import com.randomjava.projects.hitori.Hitori;
 import com.randomjava.projects.kakuro.Kakuro;
 import com.randomjava.projects.kenken.Kenken;
@@ -2470,6 +2471,69 @@ final class ProjectTests {
             final int lockedColumn = numberColumn;
             t.check("but a numbered cell is refused",
                     refused(() -> clicks.toggle(lockedRow, lockedColumn)));
+        });
+
+        h.group("236 Hashiwokakero", t -> {
+            // The state lives on island pairs, not on cells: the water carries
+            // no information, so the board is a graph and the grid is never
+            // searched.
+            Hashiwokakero puzzle = new Hashiwokakero(new java.util.Random(2));
+            puzzle.generate(7);
+            t.check("there are islands to join", puzzle.islandCount() >= 4);
+            t.check("and links between the ones that face each other",
+                    puzzle.edgeCount() >= puzzle.islandCount() - 1);
+
+            int notUnique = 0;
+            int notReproduced = 0;
+            int faults = 0;
+            for (int side = 5; side <= 9; side += 2) {
+                for (int seed = 0; seed < 3; seed++) {
+                    Hashiwokakero board = new Hashiwokakero(new java.util.Random(seed));
+                    board.generate(side);
+                    if (board.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    board.solve();
+                    if (!board.complete()) {
+                        notReproduced++;
+                    }
+                    int[] drawn = new int[board.edgeCount()];
+                    for (int e = 0; e < board.edgeCount(); e++) {
+                        drawn[e] = board.bridgesOn(e);
+                        if (drawn[e] < 0 || drawn[e] > 2) {
+                            faults++;   // never more than two between a pair
+                        }
+                    }
+                    // Every island must end up with exactly its number.
+                    int[] ends = new int[board.islandCount()];
+                    for (int e = 0; e < board.edgeCount(); e++) {
+                        int[] edge = board.edge(e);
+                        ends[edge[0]] += drawn[e];
+                        ends[edge[1]] += drawn[e];
+                    }
+                    for (int island = 0; island < board.islandCount(); island++) {
+                        if (ends[island] != board.wantedAt(island)) {
+                            faults++;
+                        }
+                    }
+                    if (!board.solved(drawn)) {
+                        faults++;   // covers crossing and connectivity
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one bridging", 0, notUnique);
+            t.equal("and solving reproduces it", 0, notReproduced);
+            t.equal("and the answer satisfies every island without crossing",
+                    0, faults);
+
+            // Clicking open water is ignored rather than being an error.
+            t.equal("water on no link maps to no edge", -1, puzzle.edgeAt(0, 0));
+            t.check("an out-of-range link is refused", refused(() -> puzzle.cycle(999)));
+            t.check("an unplayable size is refused", refused(() -> puzzle.generate(2)));
+            t.check("the api generates", ok(call("hashiwokakero", "generate", "size", 7)));
+            t.check("a click on open water is ignored rather than refused",
+                    ok(call("hashiwokakero", "toggle", "row", 0, "col", 0)));
+            t.check("the api solves", ok(call("hashiwokakero", "solve")));
         });
 
         h.group("235 Slitherlink", t -> {
