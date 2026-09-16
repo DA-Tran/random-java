@@ -41,6 +41,9 @@ import com.randomjava.projects.magicsquare.MagicSquare;
 import com.randomjava.projects.binarypuzzle.BinaryPuzzle;
 import com.randomjava.projects.futoshiki.Futoshiki;
 import com.randomjava.projects.hitori.Hitori;
+import com.randomjava.projects.kakuro.Kakuro;
+import com.randomjava.projects.kenken.Kenken;
+import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.shikaku.Shikaku;
@@ -2356,6 +2359,261 @@ final class ProjectTests {
             t.check("an unreachable board is refused rather than guessed",
                     corner.solvable() || refused(corner::applySolution));
             t.check("an off-board press is refused", refused(() -> l.press(999)));
+        });
+
+        h.group("237 Nurikabe", t -> {
+            // Island cells total the numbers, so the wall size is known before
+            // any deduction happens at all.
+            Nurikabe puzzle = new Nurikabe(new java.util.Random(1));
+            puzzle.generate(6);
+            int numbered = 0;
+            for (int row = 0; row < 6; row++) {
+                for (int column = 0; column < 6; column++) {
+                    numbered += puzzle.number(row, column);
+                }
+            }
+            t.equal("the wall size falls out of the numbers",
+                    36 - numbered, puzzle.wallTotal());
+
+            // The three rules, each checked the way that makes it a sound
+            // prune rather than a test only a finished board can pass.
+            int notUnique = 0;
+            int notReproduced = 0;
+            int faults = 0;
+            for (int side = 5; side <= 7; side++) {
+                for (int seed = 0; seed < 4; seed++) {
+                    Nurikabe board = new Nurikabe(new java.util.Random(seed));
+                    board.generate(side);
+                    if (board.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    board.solve();
+                    if (!board.complete()) {
+                        notReproduced++;
+                    }
+                    char[][] grid = new char[side][side];
+                    int shaded = 0;
+                    for (int row = 0; row < side; row++) {
+                        for (int column = 0; column < side; column++) {
+                            grid[row][column] = board.shade(row, column) == Nurikabe.WALL
+                                    ? Nurikabe.WALL : Nurikabe.ISLAND;
+                            if (grid[row][column] == Nurikabe.WALL) {
+                                shaded++;
+                            }
+                        }
+                    }
+                    if (shaded != board.wallTotal()) {
+                        faults++;
+                    }
+                    if (!board.solved(grid)) {
+                        faults++;   // covers island sizes, one number each, wall joined
+                    }
+                    for (int row = 0; row + 1 < side; row++) {
+                        for (int column = 0; column + 1 < side; column++) {
+                            if (grid[row][column] == Nurikabe.WALL
+                                    && grid[row + 1][column] == Nurikabe.WALL
+                                    && grid[row][column + 1] == Nurikabe.WALL
+                                    && grid[row + 1][column + 1] == Nurikabe.WALL) {
+                                faults++;   // a solid 2x2 is never allowed
+                            }
+                        }
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one wall", 0, notUnique);
+            t.equal("and solving reproduces it", 0, notReproduced);
+            t.equal("and the answer breaks none of the rules", 0, faults);
+
+            Nurikabe board = new Nurikabe(new java.util.Random(4));
+            board.generate(5);
+
+            // A wall in two pieces is rejected even though nothing local is
+            // wrong with it - this is the constraint no local rule can see.
+            char[][] split = new char[5][5];
+            for (char[] line : split) {
+                java.util.Arrays.fill(line, Nurikabe.ISLAND);
+            }
+            split[0][0] = Nurikabe.WALL;
+            split[4][4] = Nurikabe.WALL;
+            t.check("two disconnected wall cells are refused", !board.solved(split));
+            t.check("an off-board cell is refused", refused(() -> board.toggle(99, 0)));
+            t.check("an unplayable size is refused", refused(() -> board.generate(2)));
+            t.check("the api generates", ok(call("nurikabe", "generate", "size", 5)));
+            t.check("the api solves", ok(call("nurikabe", "solve")));
+
+            // Shading works on a blank cell, and a numbered one is refused -
+            // a number is island by definition, so it is not the player's to
+            // shade.
+            Nurikabe clicks = new Nurikabe(new java.util.Random(4));
+            clicks.generate(5);
+            int blankRow = -1;
+            int blankColumn = -1;
+            int numberRow = -1;
+            int numberColumn = -1;
+            for (int row = 0; row < 5; row++) {
+                for (int column = 0; column < 5; column++) {
+                    if (clicks.number(row, column) == 0) {
+                        blankRow = row;
+                        blankColumn = column;
+                    } else {
+                        numberRow = row;
+                        numberColumn = column;
+                    }
+                }
+            }
+            t.check("the api shades a blank cell",
+                    ok(call(clicks, "toggle", "row", blankRow, "col", blankColumn)));
+            t.equal("which really did shade it", Nurikabe.WALL,
+                    clicks.shade(blankRow, blankColumn));
+            final int lockedRow = numberRow;
+            final int lockedColumn = numberColumn;
+            t.check("but a numbered cell is refused",
+                    refused(() -> clicks.toggle(lockedRow, lockedColumn)));
+        });
+
+        h.group("232 Kakuro", t -> {
+            // The run solver carries the state that makes a run cheap: which
+            // digits are used, with the remaining sum implied by that set
+            // rather than tracked. The published tables come out of it without
+            // ever being written down.
+            int nine = 0b111111111;
+            int[] pair = {nine, nine};
+            t.equal("3 across two cells can only be 1 and 2", "[3, 3]",
+                    java.util.Arrays.toString(Kakuro.refineRun(pair.clone(), 3)));
+            t.equal("17 across two needs the 8 and the 9", "[384, 384]",
+                    java.util.Arrays.toString(Kakuro.refineRun(pair.clone(), 17)));
+            t.check("2 across two cells is impossible - no repeats allowed",
+                    Kakuro.refineRun(pair.clone(), 2) == null);
+            int[] nineCells = new int[9];
+            java.util.Arrays.fill(nineCells, nine);
+            int[] all = Kakuro.refineRun(nineCells, 45);
+            t.check("45 across nine cells leaves every digit everywhere",
+                    all != null && all[0] == nine && all[8] == nine);
+
+            // Generated puzzles are unique, and the answer really does satisfy
+            // every run - both the total and the no-repeat rule.
+            int notUnique = 0;
+            int notReproduced = 0;
+            for (int side = 5; side <= 6; side++) {
+                for (int seed = 0; seed < 2; seed++) {
+                    Kakuro puzzle = new Kakuro(new java.util.Random(seed));
+                    puzzle.generate(side);
+                    if (puzzle.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    puzzle.solve();
+                    if (!puzzle.complete() || !puzzle.firstFault().isEmpty()) {
+                        notReproduced++;
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one grid", 0, notUnique);
+            t.equal("and solving reproduces it with no run broken", 0, notReproduced);
+
+            Kakuro board = new Kakuro(new java.util.Random(3));
+            board.generate(5);
+            t.check("an unplayable size is refused", refused(() -> board.generate(20)));
+            t.check("a digit outside 1 to 9 is refused",
+                    refused(() -> board.place(0, 0, 12)));
+            t.check("the api generates", ok(call("kakuro", "generate", "size", 5)));
+            t.check("the api solves", ok(call("kakuro", "solve")));
+        });
+
+        h.group("234 Kenken", t -> {
+            // Addition and multiplication fold in any order. Subtraction and
+            // division do not, which is why they only ever appear on two-cell
+            // cages, read as |a-b| and max/min - without that fixed reading a
+            // clue marked 2- would mean different things from either end.
+            t.equal("a cage sums in any order", 9,
+                    Kenken.applyOperation(new int[] {2, 3, 4}, '+'));
+            t.equal("and multiplies in any order", 24,
+                    Kenken.applyOperation(new int[] {2, 3, 4}, 'x'));
+            t.equal("subtraction is read as a distance", 2,
+                    Kenken.applyOperation(new int[] {3, 5}, '-'));
+            t.equal("so it does not matter which cell comes first", 2,
+                    Kenken.applyOperation(new int[] {5, 3}, '-'));
+            t.equal("division is read larger over smaller", 3,
+                    Kenken.applyOperation(new int[] {6, 2}, '/'));
+            t.equal("likewise from either end", 3,
+                    Kenken.applyOperation(new int[] {2, 6}, '/'));
+
+            // The published cage tables are just the cases where intersecting
+            // every assignment happens to decide the cell.
+            int all = 0b1111;
+            t.equal("3 in two cells on a 4x4 can only be 1 and 2", "[3, 3]",
+                    java.util.Arrays.toString(
+                            Kenken.refineCage(new int[] {all, all}, 3, '+', 4)));
+            t.equal("12x in two cells needs the 3 and the 4", "[12, 12]",
+                    java.util.Arrays.toString(
+                            Kenken.refineCage(new int[] {all, all}, 12, 'x', 4)));
+            t.check("a target nothing can reach is refused",
+                    Kenken.refineCage(new int[] {all, all}, 99, '+', 4) == null);
+
+            // Generated puzzles: unique, and the answer obeys both the Latin
+            // rule and every cage it was built from.
+            int notUnique = 0;
+            int notReproduced = 0;
+            int faults = 0;
+            for (int side = 3; side <= 6; side++) {
+                for (int seed = 0; seed < 3; seed++) {
+                    Kenken puzzle = new Kenken(new java.util.Random(seed));
+                    puzzle.generate(side);
+                    if (puzzle.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    puzzle.solve();
+                    if (!puzzle.complete()) {
+                        notReproduced++;
+                    }
+                    for (int line = 0; line < side; line++) {
+                        boolean[] inRow = new boolean[side + 1];
+                        boolean[] inColumn = new boolean[side + 1];
+                        for (int other = 0; other < side; other++) {
+                            if (inRow[puzzle.digit(line, other)]
+                                    || inColumn[puzzle.digit(other, line)]) {
+                                faults++;
+                            }
+                            inRow[puzzle.digit(line, other)] = true;
+                            inColumn[puzzle.digit(other, line)] = true;
+                        }
+                    }
+                    // Regroup the answer by cage and check each hits its target.
+                    for (int cage = 0; cage < puzzle.cageCount(); cage++) {
+                        List<Integer> values = new java.util.ArrayList<>();
+                        for (int row = 0; row < side; row++) {
+                            for (int column = 0; column < side; column++) {
+                                if (puzzle.cageOf(row, column) == cage) {
+                                    values.add(puzzle.digit(row, column));
+                                }
+                            }
+                        }
+                        int[] asArray = new int[values.size()];
+                        for (int i = 0; i < asArray.length; i++) {
+                            asArray[i] = values.get(i);
+                        }
+                        char operation = puzzle.operationOf(cage);
+                        if (asArray.length > 2 && (operation == '-' || operation == '/')) {
+                            faults++;   // ambiguous on anything but a pair
+                        }
+                        if (Kenken.applyOperation(asArray, operation)
+                                != puzzle.targetOf(cage)) {
+                            faults++;
+                        }
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one square", 0, notUnique);
+            t.equal("and solving reproduces it", 0, notReproduced);
+            t.equal("and the answer satisfies the Latin rule and every cage", 0, faults);
+
+            Kenken board = new Kenken(new java.util.Random(9));
+            board.generate(4);
+            t.check("a digit out of range is refused", refused(() -> board.place(0, 0, 9)));
+            t.check("an off-board cell is refused", refused(() -> board.place(9, 0, 1)));
+            t.check("an unplayable size is refused", refused(() -> board.generate(9)));
+            t.check("the api generates", ok(call("kenken", "generate", "size", 4)));
+            t.check("the api places", ok(call("kenken", "place", "row", 0, "col", 0)));
+            t.check("the api solves", ok(call("kenken", "solve")));
         });
 
         h.group("242 Magic Square", t -> {

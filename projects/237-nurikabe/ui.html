@@ -1,14 +1,18 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Divide a grid into numbered islands separated by one connected wall.</p>
+  <p class="hint">
+    Shade cells into a single connected wall containing no solid 2x2 block,
+    leaving every number on an island of exactly that many unshaded cells. Each
+    island holds exactly one number. Click a cell to shade it, again to clear.
+  </p>
   <div class="row">
     <label class="field">
       <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <input data-field="size" type="number" value="6" min="5" max="7">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
@@ -17,3 +21,16 @@
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('toggle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

@@ -1,6 +1,6 @@
 # All 251 projects
 
-140 implemented, 111 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
+143 implemented, 108 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
 
 Tick a box when you graduate one out of scaffold state, and flip its `done` flag in [`tools/catalog.py`](../tools/catalog.py) so the hub and the launcher agree.
 
@@ -301,12 +301,12 @@ Tick a box when you graduate one out of scaffold state, and flip its `done` flag
 - [x] **229** [Lights Out](229-lights-out/) `grid` `intermediate` - Turn every light off, where pressing one flips it and its neighbours.
 - [x] **230** [Peg Solitaire](230-peg-solitaire/) `grid` `intermediate` - Jump pegs over each other to leave a single peg in the centre.
 - [x] **231** [Mastermind](231-mastermind/) `game` `beginner` - Deduce a hidden colour code from black and white peg feedback.
-- [ ] **232** [Kakuro](232-kakuro/) `grid` `intermediate` - A crossword with sums: fill runs of digits that add to the given totals.
+- [x] **232** [Kakuro](232-kakuro/) `grid` `intermediate` - A crossword with sums: fill runs of digits that add to the given totals.
 - [x] **233** [Futoshiki](233-futoshiki/) `grid` `intermediate` - A Latin square with greater-than signs constraining neighbouring cells.
-- [ ] **234** [Kenken](234-kenken/) `grid` `intermediate` - A Latin square where outlined cages must reach a target by one operation.
+- [x] **234** [Kenken](234-kenken/) `grid` `intermediate` - A Latin square where outlined cages must reach a target by one operation.
 - [ ] **235** [Slitherlink](235-slitherlink/) `grid` `intermediate` - Draw a single closed loop so each number has that many edges around it.
 - [ ] **236** [Hashiwokakero](236-hashiwokakero/) `grid` `intermediate` - Join islands with bridges so every island has its count and all connect.
-- [ ] **237** [Nurikabe](237-nurikabe/) `grid` `intermediate` - Divide a grid into numbered islands separated by one connected wall.
+- [x] **237** [Nurikabe](237-nurikabe/) `grid` `intermediate` - Divide a grid into numbered islands separated by one connected wall.
 - [x] **238** [Hitori](238-hitori/) `grid` `intermediate` - Black out cells so no number repeats in a line and the rest stay joined.
 - [x] **239** [Binary Puzzle](239-binary-puzzle/) `grid` `intermediate` - Fill a grid with two symbols, never three in a row, balanced and all rows distinct.
 - [x] **240** [Skyscrapers](240-skyscrapers/) `grid` `intermediate` - Place building heights so each edge clue counts the skyline visible from it.

@@ -2547,7 +2547,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "A crossword with sums: fill runs of digits that add to the given totals.",
     "stack": ""
   },
@@ -2569,7 +2569,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "A Latin square where outlined cages must reach a target by one operation.",
     "stack": ""
   },
@@ -2602,7 +2602,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Divide a grid into numbered islands separated by one connected wall.",
     "stack": ""
   },

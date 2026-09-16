@@ -1,14 +1,28 @@
+<style>
+  /* A Kakuro clue holds two numbers either side of a diagonal, so these cells
+     need more room than the shell's default 30px square. */
+  #board .cell { width: 48px; font-size: 12px; letter-spacing: -0.02em; }
+</style>
+
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">A crossword with sums: fill runs of digits that add to the given totals.</p>
+  <p class="hint">
+    A block written <code>12\7</code> wants 12 going down and 7 going across.
+    Each run of white cells adds to its number and never repeats a digit. Pick a
+    digit, then click a white cell; click the same digit again to clear it.
+  </p>
   <div class="row">
     <label class="field">
       <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <input data-field="size" type="number" value="6" min="5" max="6">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <label class="field">
+      <span>Digit to place</span>
+      <input data-field="value" type="number" value="1" min="1" max="9">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
@@ -17,3 +31,16 @@
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('place', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>
