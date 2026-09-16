@@ -49,6 +49,7 @@ import com.randomjava.projects.knightstour.KnightsTour;
 import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
+import com.randomjava.projects.rivercrossing.RiverCrossing;
 import com.randomjava.projects.shikaku.Shikaku;
 import com.randomjava.projects.waterjug.WaterJug;
 import com.randomjava.projects.slitherlink.Slitherlink;
@@ -3215,6 +3216,45 @@ final class ProjectTests {
             t.check("an off-board start is refused", refused(() -> board.reset(6, 9, 0)));
             t.check("the api generates", ok(call("knights-tour", "generate", "size", 6)));
             t.check("the api solves", ok(call("knights-tour", "solve")));
+        });
+
+        h.group("245 River Crossing", t -> {
+            RiverCrossing classic = new RiverCrossing();
+            classic.reset("classic");
+            List<String> steps = classic.solve();
+            t.check("the farmer can get everything across", steps != null);
+            t.equal("and the shortest way is the textbook seven crossings",
+                    7, steps == null ? -1 : steps.size());
+            t.check("beginning with the goat, the only safe first move",
+                    steps != null && steps.get(0).contains("goat"));
+            t.check("and it includes bringing the goat back again",
+                    steps != null && steps.stream().anyMatch(
+                            line -> line.contains("goat") && line.contains("back")));
+
+            // The rule is about who is left unattended, not who travels. With
+            // the ferryman present, any pair may share a bank.
+            t.check("wolf and goat alone on a bank is not allowed",
+                    !classic.safe(0b011, false));
+            t.check("but the same pair with the ferryman is fine",
+                    classic.safe(0b011, true));
+            t.check("wolf and cabbage may be left together",
+                    classic.safe(0b101, false));
+
+            // Missionaries: everyone rows, so there is no empty crossing, and
+            // the count rule replaces the pair rule.
+            RiverCrossing mission = new RiverCrossing();
+            mission.reset("missionaries");
+            List<String> across = mission.solve();
+            t.check("the missionaries get across too", across != null);
+            t.equal("in the known minimum of eleven crossings",
+                    11, across == null ? -1 : across.size());
+            t.check("cannibals outnumbering missionaries is refused",
+                    !mission.safe(0b111001, false));
+            t.check("equal numbers are fine", mission.safe(0b111000, false));
+
+            t.check("the api resets", ok(call("river-crossing", "generate",
+                    "puzzle", "classic")));
+            t.check("the api solves", ok(call("river-crossing", "solve")));
         });
 
         h.group("246 Water Jug", t -> {

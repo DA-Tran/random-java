@@ -2690,7 +2690,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Get everyone across without leaving the wrong pair alone together.",
     "stack": ""
   },

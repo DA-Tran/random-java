@@ -1,19 +1,25 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Get everyone across without leaving the wrong pair alone together.</p>
+  <p class="hint">
+    Ferry everyone to the far bank. Nothing may be left on a bank with something
+    that would eat it - but the ferryman's presence keeps the peace, so only the
+    bank he has just left can be in trouble.
+  </p>
   <div class="row">
     <label class="field">
-      <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <span>Puzzle</span>
+      <select data-field="puzzle">
+        <option value="classic">Wolf, goat and cabbage</option>
+        <option value="missionaries">Missionaries and cannibals</option>
+      </select>
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>Reset</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
 <div class="card" data-boot="generate">
-  <h2>Board</h2>
-  <div id="board"></div>
+  <h2>Banks and crossings</h2>
+  <div id="items"></div>
   <div id="out" class="out"></div>
 </div>

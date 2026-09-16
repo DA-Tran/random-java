@@ -677,7 +677,7 @@ PROJECTS = [
      "Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter."),
     (244, "zebra-puzzle", "TOOL", False,
      "Work out who owns the zebra from a list of constraints, by elimination."),
-    (245, "river-crossing", "GRID", False,
+    (245, "river-crossing", "GRID", True,
      "Get everyone across without leaving the wrong pair alone together."),
     (246, "water-jug", "TOOL", True,
      "Measure an exact amount using jugs that have no markings."),
