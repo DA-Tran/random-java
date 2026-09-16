@@ -24,6 +24,7 @@ public final class AllTests {
         CoreTests.run(harness);
         ProjectTests.run(harness);
         SuiteTests.run(harness);
+        StressTests.run(harness);
 
         boolean passed = harness.report(System.currentTimeMillis() - started);
         System.out.println();
