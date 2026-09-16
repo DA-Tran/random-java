@@ -39,6 +39,7 @@ import com.randomjava.projects.game2048.Game2048;
 import com.randomjava.projects.lightsout.LightsOut;
 import com.randomjava.projects.magicsquare.MagicSquare;
 import com.randomjava.projects.binarypuzzle.BinaryPuzzle;
+import com.randomjava.projects.cryptarithm.Cryptarithm;
 import com.randomjava.projects.futoshiki.Futoshiki;
 import com.randomjava.projects.hashiwokakero.Hashiwokakero;
 import com.randomjava.projects.hitori.Hitori;
@@ -3145,6 +3146,48 @@ final class ProjectTests {
             t.check("a click on a clue is ignored rather than refused",
                     ok(call("skyscrapers", "place", "row", 0, "col", 0)));
             t.check("the api solves", ok(call("skyscrapers", "solve")));
+        });
+
+        h.group("243 Cryptarithm", t -> {
+            // The classics, with their known answers.
+            Cryptarithm.Puzzle money = Cryptarithm.parse("SEND + MORE = MONEY");
+            Map<Character, Integer> answer = Cryptarithm.solve(money);
+            t.check("SEND + MORE = MONEY has an answer", answer != null);
+            t.equal("and SEND is 9567", 9567L,
+                    Cryptarithm.valueOf("SEND", answer));
+            t.equal("MORE is 1085", 1085L, Cryptarithm.valueOf("MORE", answer));
+            t.equal("MONEY is 10652", 10652L, Cryptarithm.valueOf("MONEY", answer));
+            t.equal("and the sum actually adds up",
+                    Cryptarithm.valueOf("MONEY", answer),
+                    Cryptarithm.valueOf("SEND", answer)
+                            + Cryptarithm.valueOf("MORE", answer));
+            t.equal("it is the only assignment, which is what makes it the classic",
+                    1, Cryptarithm.countSolutions(money, 3));
+
+            Cryptarithm.Puzzle danger = Cryptarithm.parse("CROSS + ROADS = DANGER");
+            t.equal("CROSS + ROADS = DANGER is also unique",
+                    1, Cryptarithm.countSolutions(danger, 3));
+
+            // Plenty of plausible puzzles are not unique, which is why counting
+            // is worth doing rather than stopping at the first answer.
+            t.check("TWO + TWO = FOUR has several answers",
+                    Cryptarithm.countSolutions(Cryptarithm.parse("TWO + TWO = FOUR"), 3) > 1);
+
+            // No leading zeros, and an addend longer than the total is hopeless.
+            t.equal("a sum that cannot reach its total has none", 0,
+                    Cryptarithm.countSolutions(Cryptarithm.parse("ABCD + A = B"), 2));
+            Map<Character, Integer> small = Cryptarithm.solve(Cryptarithm.parse("A + B = CD"));
+            t.check("a two-digit total is fine", small != null);
+            t.check("but its leading letter is never zero",
+                    small == null || small.get('C') != 0);
+
+            // Letters are distinct, so a puzzle needing more than ten is refused.
+            t.check("more than ten letters is refused",
+                    refused(() -> Cryptarithm.parse("ABCDEF + GHIJK = LMNOP")));
+            t.check("nonsense input is refused",
+                    refused(() -> Cryptarithm.parse("12 + 34 = 46")));
+            t.check("the api computes",
+                    ok(call("cryptarithm", "compute", "input", "SEND + MORE = MONEY")));
         });
 
         h.group("233 Futoshiki", t -> {

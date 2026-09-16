@@ -2668,7 +2668,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "TOOL",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter.",
     "stack": ""
   },

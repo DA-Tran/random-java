@@ -1,10 +1,14 @@
 <div class="card">
   <h2>Input</h2>
-  <p class="hint">Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter.</p>
+  <p class="hint">
+    Each letter stands for one digit, the same digit everywhere it appears, and
+    no multi-letter word may start with a zero. Try
+    <code>SEND + MORE = MONEY</code> or <code>CROSS + ROADS = DANGER</code>.
+  </p>
   <div class="row">
     <label class="field">
       <span>Input</span>
-      <input data-field="input" placeholder="type something" autocomplete="off">
+      <input data-field="input" placeholder="SEND + MORE = MONEY" value="SEND + MORE = MONEY" autocomplete="off">
     </label>
     <div class="tight"><button data-action="compute" data-primary>Run</button></div>
   </div>

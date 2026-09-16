@@ -1,6 +1,6 @@
 # All 251 projects
 
-145 implemented, 106 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
+146 implemented, 105 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
 
 Tick a box when you graduate one out of scaffold state, and flip its `done` flag in [`tools/catalog.py`](../tools/catalog.py) so the hub and the launcher agree.
 
@@ -312,7 +312,7 @@ Tick a box when you graduate one out of scaffold state, and flip its `done` flag
 - [x] **240** [Skyscrapers](240-skyscrapers/) `grid` `intermediate` - Place building heights so each edge clue counts the skyline visible from it.
 - [x] **241** [Shikaku](241-shikaku/) `grid` `intermediate` - Cut a grid into rectangles, each containing one number equal to its area.
 - [x] **242** [Magic Square](242-magic-square/) `grid` `intermediate` - Arrange numbers so every row, column and diagonal adds to the same total.
-- [ ] **243** [Cryptarithm](243-cryptarithm/) `tool` `intermediate` - Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter.
+- [x] **243** [Cryptarithm](243-cryptarithm/) `tool` `intermediate` - Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter.
 - [ ] **244** [Zebra Puzzle](244-zebra-puzzle/) `tool` `advanced` - Work out who owns the zebra from a list of constraints, by elimination.
 - [ ] **245** [River Crossing](245-river-crossing/) `grid` `intermediate` - Get everyone across without leaving the wrong pair alone together.
 - [ ] **246** [Water Jug](246-water-jug/) `tool` `intermediate` - Measure an exact amount using jugs that have no markings.

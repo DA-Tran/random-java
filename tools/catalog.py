@@ -673,7 +673,7 @@ PROJECTS = [
      "Cut a grid into rectangles, each containing one number equal to its area."),
     (242, "magic-square", "GRID", True,
      "Arrange numbers so every row, column and diagonal adds to the same total."),
-    (243, "cryptarithm", "TOOL", False,
+    (243, "cryptarithm", "TOOL", True,
      "Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter."),
     (244, "zebra-puzzle", "TOOL", False,
      "Work out who owns the zebra from a list of constraints, by elimination."),
