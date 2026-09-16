@@ -276,7 +276,7 @@ public final class Catalog {
             new Meta(232, "kakuro", "Kakuro", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "A crossword with sums: fill runs of digits that add to the given totals.", "", true),
             new Meta(233, "futoshiki", "Futoshiki", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "A Latin square with greater-than signs constraining neighbouring cells.", "", true),
             new Meta(234, "kenken", "Kenken", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "A Latin square where outlined cages must reach a target by one operation.", "", true),
-            new Meta(235, "slitherlink", "Slitherlink", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Draw a single closed loop so each number has that many edges around it.", "", false),
+            new Meta(235, "slitherlink", "Slitherlink", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Draw a single closed loop so each number has that many edges around it.", "", true),
             new Meta(236, "hashiwokakero", "Hashiwokakero", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Join islands with bridges so every island has its count and all connect.", "", false),
             new Meta(237, "nurikabe", "Nurikabe", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Divide a grid into numbered islands separated by one connected wall.", "", true),
             new Meta(238, "hitori", "Hitori", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Black out cells so no number repeats in a line and the rest stay joined.", "", true),

@@ -2580,7 +2580,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Draw a single closed loop so each number has that many edges around it.",
     "stack": ""
   },

@@ -47,6 +47,7 @@ import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.shikaku.Shikaku;
+import com.randomjava.projects.slitherlink.Slitherlink;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
 import com.randomjava.projects.sokoban.Sokoban;
 import com.randomjava.projects.mastermind.Mastermind;
@@ -2469,6 +2470,88 @@ final class ProjectTests {
             final int lockedColumn = numberColumn;
             t.check("but a numbered cell is refused",
                     refused(() -> clicks.toggle(lockedRow, lockedColumn)));
+        });
+
+        h.group("235 Slitherlink", t -> {
+            Slitherlink puzzle = new Slitherlink(new java.util.Random(3));
+            puzzle.generate(6);
+
+            // The whole model: an edge is used where inside meets outside, and
+            // everything off the board counts as outside, so border clues need
+            // no special case.
+            char[][] blob = new char[4][4];
+            for (char[] line : blob) {
+                java.util.Arrays.fill(line, Slitherlink.OUTSIDE);
+            }
+            t.equal("an outside cell alone has no edges", 0,
+                    puzzle.edgesAround(blob, 1, 1));
+            blob[1][1] = Slitherlink.INSIDE;
+            t.equal("one inside cell is boxed by four edges", 4,
+                    puzzle.edgesAround(blob, 1, 1));
+            blob[1][2] = Slitherlink.INSIDE;
+            t.equal("joining a neighbour drops the shared side", 3,
+                    puzzle.edgesAround(blob, 1, 1));
+            blob[0][0] = Slitherlink.INSIDE;
+            t.equal("a corner inside cell still counts the board edge", 4,
+                    puzzle.edgesAround(blob, 0, 0));
+
+            // One closed loop is exactly "both sides connected". Two separate
+            // blobs mean two loops, so it must be rejected.
+            char[][] twoBlobs = new char[5][5];
+            for (char[] line : twoBlobs) {
+                java.util.Arrays.fill(line, Slitherlink.OUTSIDE);
+            }
+            twoBlobs[1][1] = Slitherlink.INSIDE;
+            twoBlobs[3][3] = Slitherlink.INSIDE;
+            Slitherlink five = new Slitherlink(new java.util.Random(1));
+            five.generate(5);
+            t.check("two separate inside regions are not one loop",
+                    !five.solved(twoBlobs));
+
+            // Generated puzzles: unique, and the answer matches every clue.
+            int notUnique = 0;
+            int notReproduced = 0;
+            int clueFaults = 0;
+            for (int side = 4; side <= 6; side++) {
+                for (int seed = 0; seed < 3; seed++) {
+                    Slitherlink board = new Slitherlink(new java.util.Random(seed));
+                    board.generate(side);
+                    if (board.countSolutions(2) != 1) {
+                        notUnique++;
+                    }
+                    board.solve();
+                    if (!board.complete()) {
+                        notReproduced++;
+                    }
+                    char[][] grid = new char[side][side];
+                    for (int row = 0; row < side; row++) {
+                        for (int column = 0; column < side; column++) {
+                            grid[row][column] = board.side(row, column);
+                        }
+                    }
+                    for (int row = 0; row < side; row++) {
+                        for (int column = 0; column < side; column++) {
+                            int clue = board.clue(row, column);
+                            if (clue >= 0
+                                    && board.edgesAround(grid, row, column) != clue) {
+                                clueFaults++;
+                            }
+                        }
+                    }
+                    if (!board.solved(grid)) {
+                        clueFaults++;
+                    }
+                }
+            }
+            t.equal("every generated puzzle has exactly one loop", 0, notUnique);
+            t.equal("and solving reproduces it", 0, notReproduced);
+            t.equal("and every clue counts its own sides correctly", 0, clueFaults);
+
+            t.check("an off-board cell is refused", refused(() -> puzzle.cycle(99, 0)));
+            t.check("an unplayable size is refused", refused(() -> puzzle.generate(2)));
+            t.check("the api generates", ok(call("slitherlink", "generate", "size", 5)));
+            t.check("the api toggles", ok(call("slitherlink", "cycle", "row", 0, "col", 0)));
+            t.check("the api solves", ok(call("slitherlink", "solve")));
         });
 
         h.group("232 Kakuro", t -> {

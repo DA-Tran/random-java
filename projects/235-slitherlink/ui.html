@@ -1,14 +1,20 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Draw a single closed loop so each number has that many edges around it.</p>
+  <p class="hint">
+    One closed loop runs along the grid lines, and each number says how many of
+    its four sides the loop uses. Rather than drawing edges, mark which cells lie
+    <em>inside</em> the loop - the loop is then just the border between inside
+    and outside. Click a cell to shade it, again to mark it clearly outside,
+    again to clear.
+  </p>
   <div class="row">
     <label class="field">
       <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <input data-field="size" type="number" value="6" min="4" max="7">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
@@ -17,3 +23,16 @@
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('cycle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

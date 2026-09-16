@@ -1,6 +1,6 @@
 # All 251 projects
 
-143 implemented, 108 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
+144 implemented, 107 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
 
 Tick a box when you graduate one out of scaffold state, and flip its `done` flag in [`tools/catalog.py`](../tools/catalog.py) so the hub and the launcher agree.
 
@@ -304,7 +304,7 @@ Tick a box when you graduate one out of scaffold state, and flip its `done` flag
 - [x] **232** [Kakuro](232-kakuro/) `grid` `intermediate` - A crossword with sums: fill runs of digits that add to the given totals.
 - [x] **233** [Futoshiki](233-futoshiki/) `grid` `intermediate` - A Latin square with greater-than signs constraining neighbouring cells.
 - [x] **234** [Kenken](234-kenken/) `grid` `intermediate` - A Latin square where outlined cages must reach a target by one operation.
-- [ ] **235** [Slitherlink](235-slitherlink/) `grid` `intermediate` - Draw a single closed loop so each number has that many edges around it.
+- [x] **235** [Slitherlink](235-slitherlink/) `grid` `intermediate` - Draw a single closed loop so each number has that many edges around it.
 - [ ] **236** [Hashiwokakero](236-hashiwokakero/) `grid` `intermediate` - Join islands with bridges so every island has its count and all connect.
 - [x] **237** [Nurikabe](237-nurikabe/) `grid` `intermediate` - Divide a grid into numbered islands separated by one connected wall.
 - [x] **238** [Hitori](238-hitori/) `grid` `intermediate` - Black out cells so no number repeats in a line and the rest stay joined.

@@ -657,7 +657,7 @@ PROJECTS = [
      "A Latin square with greater-than signs constraining neighbouring cells."),
     (234, "kenken", "GRID", True,
      "A Latin square where outlined cages must reach a target by one operation."),
-    (235, "slitherlink", "GRID", False,
+    (235, "slitherlink", "GRID", True,
      "Draw a single closed loop so each number has that many edges around it."),
     (236, "hashiwokakero", "GRID", False,
      "Join islands with bridges so every island has its count and all connect."),
