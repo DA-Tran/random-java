@@ -1,0 +1,40 @@
+<div class="card">
+  <h2>Password</h2>
+  <p class="hint">
+    Scored on entropy rather than checkbox rules, so a long ordinary phrase beats
+    a short one full of symbols. Nothing is stored, logged or sent anywhere.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Password to score</span>
+      <input data-field="input" type="password" id="pw" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="tight"><button data-action="compute" data-primary>Score</button></div>
+    <div class="tight"><button class="quiet" id="reveal" type="button">Show</button></div>
+  </div>
+  <div class="buttons" id="samples">
+    <button class="quiet" data-sample="password123">password123</button>
+    <button class="quiet" data-sample="Qwerty2024!">Qwerty2024!</button>
+    <button class="quiet" data-sample="correct-horse-battery-staple">correct-horse-battery-staple</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Assessment</h2>
+  <div id="out" class="out"><p class="empty">Type a password and score it.</p></div>
+</div>
+
+<script>
+document.getElementById('reveal').addEventListener('click', function () {
+  const field = document.getElementById('pw');
+  const showing = field.type === 'text';
+  field.type = showing ? 'password' : 'text';
+  this.textContent = showing ? 'Show' : 'Hide';
+});
+document.getElementById('samples').addEventListener('click', function (event) {
+  const button = event.target.closest('[data-sample]');
+  if (!button) { return; }
+  document.getElementById('pw').value = button.dataset.sample;
+  RJ.send('compute');
+});
+</script>

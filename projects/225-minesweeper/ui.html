@@ -1,0 +1,32 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">Click to clear. The first click is never a mine, and always opens a region.</p>
+  <div class="row">
+    <label class="field">
+      <span>Board side</span>
+      <input data-field="size" type="number" value="9" min="3" max="24">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New game</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Reveal</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send(event.shiftKey ? 'flag' : 'reveal',
+            { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

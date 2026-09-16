@@ -1,0 +1,21 @@
+<div class="card">
+  <h2>Guess</h2>
+  <p class="hint">
+    Four colours from RGBYOP, repeats allowed. Black peg = right colour and
+    place, white = right colour, wrong place.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Your guess</span>
+      <input data-field="guess" placeholder="RGBY" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="guess" data-primary>Guess</button></div>
+    <div class="tight"><button class="ghost" data-action="start">New code</button></div>
+    <div class="tight"><button class="quiet" data-action="reveal">Reveal</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Board</h2>
+  <div id="out" class="out"><p class="empty">Press New code to begin.</p></div>
+</div>

@@ -1,0 +1,29 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">Click a square beside the path to build. Towers cost 50 and cannot sit on the path.</p>
+  <div class="row">
+    <div class="tight"><button data-action="generate" data-primary>New map</button></div>
+    <div class="tight"><button class="ghost" data-action="wave">Next wave</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Tick</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Run the wave</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Map</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('place', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

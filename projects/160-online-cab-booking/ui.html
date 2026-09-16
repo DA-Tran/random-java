@@ -1,0 +1,24 @@
+<div class="card">
+  <h2>Add an entry</h2>
+  <p class="hint">Book a cab between two points with fare and arrival estimates and trip status.</p>
+  <div class="row">
+    <label class="field">
+      <span>Label</span>
+      <input data-field="label" placeholder="what is it" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Note</span>
+      <input data-field="meta" placeholder="optional detail" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="add" data-primary>Add</button></div>
+  </div>
+  <div class="buttons">
+    <button class="quiet" data-action="clear">Clear all</button>
+  </div>
+</div>
+
+<div class="card" data-boot="list">
+  <h2>Entries</h2>
+  <div id="items"><p class="empty">Nothing here yet.</p></div>
+  <div id="out" class="out"></div>
+</div>

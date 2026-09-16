@@ -1,0 +1,49 @@
+<div class="card">
+  <h2>Same scramble, every method</h2>
+  <p class="hint">
+    Both solutions are replayed onto a fresh cube before the numbers are shown,
+    so a method can never be credited with a solve that does not work.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Scramble</span>
+      <input data-field="scramble" id="scr" placeholder="leave blank for a random one"
+             autocomplete="off" spellcheck="false">
+    </label>
+    <div class="tight"><button data-action="compare" data-primary>Compare</button></div>
+    <div class="tight"><button class="ghost" data-action="average">Average over 10</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="compare">
+  <h2>Result</h2>
+  <div id="out" class="out"></div>
+  <div id="runs"></div>
+</div>
+
+<script>
+const origRender = RJ.render;
+document.addEventListener('click', function () {
+  setTimeout(function () {
+    const host = document.getElementById('runs');
+    fetch('api', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'compare', scramble: document.getElementById('scr').value})})
+      .then(r => r.json()).then(function (d) {
+        if (!d.runs) { return; }
+        document.getElementById('scr').value = d.scramble;
+        let html = '<table class="data"><tr><th>Method</th><th>Moves</th><th>Stages</th></tr>';
+        d.runs.forEach(function (r) {
+          html += '<tr><td>' + RJ.esc(r.method) + '</td><td>' + r.moves +
+                  '</td><td>' + r.stages + '</td></tr>';
+        });
+        html += '</table>';
+        d.runs.forEach(function (r) {
+          html += '<h3 style="font-size:14px;margin:18px 0 6px">' + RJ.esc(r.method) + '</h3>';
+          html += '<div style="font-family:ui-monospace,Consolas,monospace;font-size:12px;' +
+                  'color:var(--accent);word-break:break-word">' + RJ.esc(r.solution) + '</div>';
+        });
+        host.innerHTML = html;
+      });
+  }, 60);
+}, true);
+</script>

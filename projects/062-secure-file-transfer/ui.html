@@ -1,0 +1,30 @@
+<div class="card">
+  <h2>File</h2>
+  <p class="hint">
+    Send it, then send it again with tampering, and watch the plain checksum
+    pass while the HMAC refuses.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Name</span>
+      <input data-field="name" value="report.txt" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Shared secret</span>
+      <input data-field="secret" value="shared-secret-value" autocomplete="off">
+    </label>
+  </div>
+  <label class="field">
+    <span>Contents</span>
+    <textarea data-field="contents" placeholder="quarterly numbers, confidential"></textarea>
+  </label>
+  <div class="buttons">
+    <button data-action="send" data-primary>Send</button>
+    <button class="ghost" data-action="tamper">Send with an attacker in the middle</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Arrival</h2>
+  <div id="out" class="out"><p class="empty">Nothing sent yet.</p></div>
+</div>

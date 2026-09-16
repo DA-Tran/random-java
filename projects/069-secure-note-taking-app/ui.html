@@ -1,0 +1,39 @@
+<div class="card">
+  <h2>Vault</h2>
+  <p class="hint">
+    PBKDF2-SHA256 stretches the password; AES-256-GCM encrypts and
+    authenticates. At least 8 characters.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Master password</span>
+      <input data-field="password" type="password" placeholder="correct horse battery" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="unlock" data-primary>Unlock</button></div>
+    <div class="tight"><button class="quiet" data-action="lock">Lock</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Add a note</h2>
+  <div class="row">
+    <label class="field">
+      <span>Title (kept in the clear)</span>
+      <input data-field="label" placeholder="wifi password" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Body (encrypted)</span>
+      <input data-field="meta" placeholder="the secret bit" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="add" data-primary>Seal</button></div>
+  </div>
+  <div class="buttons">
+    <button class="quiet" data-action="clear">Clear all</button>
+  </div>
+</div>
+
+<div class="card" data-boot="list">
+  <h2>Notes</h2>
+  <div id="items"><p class="empty">Nothing here yet.</p></div>
+  <div id="out" class="out"></div>
+</div>

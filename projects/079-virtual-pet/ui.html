@@ -1,0 +1,24 @@
+<div class="card">
+  <h2>Your pet</h2>
+  <p class="hint">Every action costs something else. Nothing is free, and the clock never stops.</p>
+  <div class="row">
+    <label class="field">
+      <span>Name</span>
+      <input data-field="name" value="Pip" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="start" data-primary>New pet</button></div>
+  </div>
+  <div class="buttons">
+    <button data-action="feed">Feed</button>
+    <button data-action="play">Play</button>
+    <button data-action="rest">Rest</button>
+    <button class="quiet" data-action="wait">Wait</button>
+  </div>
+</div>
+
+<div class="card" data-boot="status">
+  <h2>How it is doing</h2>
+  <p class="hint">food, energy, fun, health</p>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>

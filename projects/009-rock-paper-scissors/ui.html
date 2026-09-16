@@ -1,0 +1,39 @@
+<div class="card">
+  <h2>Match</h2>
+  <p class="hint">
+    The opponent watches which throw you favour and plays the counter to it most
+    of the time, so varying your choices genuinely helps.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Best of</span>
+      <select data-field="bestOf">
+        <option value="1">1</option>
+        <option value="3" selected>3</option>
+        <option value="5">5</option>
+        <option value="7">7</option>
+      </select>
+    </label>
+    <div class="tight"><button class="ghost" data-action="new">New match</button></div>
+  </div>
+  <div class="buttons">
+    <button data-throw="rock">Rock</button>
+    <button data-throw="paper">Paper</button>
+    <button data-throw="scissors">Scissors</button>
+  </div>
+  <input type="hidden" data-field="move" id="move">
+</div>
+
+<div class="card" data-boot="state">
+  <h2>Result</h2>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+document.addEventListener('click', function (event) {
+  const button = event.target.closest('[data-throw]');
+  if (!button) { return; }
+  document.getElementById('move').value = button.dataset.throw;
+  RJ.send('play');
+});
+</script>

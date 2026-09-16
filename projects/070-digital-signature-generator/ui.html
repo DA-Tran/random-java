@@ -1,0 +1,31 @@
+<div class="card">
+  <h2>Sign</h2>
+  <p class="hint">
+    The message is hashed with SHA-256 and the <em>hash</em> is signed - RSA
+    cannot sign anything longer than its modulus.
+  </p>
+  <label class="field">
+    <span>Message</span>
+    <textarea data-field="message" placeholder="Transfer approved by me."></textarea>
+  </label>
+  <div class="row">
+    <label class="field">
+      <span>Identity</span>
+      <input data-field="identity" value="alice" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="sign" data-primary>Sign</button></div>
+    <div class="tight"><button class="ghost" data-action="verify">Verify</button></div>
+  </div>
+  <label class="field">
+    <span>Signature (leave blank to reuse the last one for this message)</span>
+    <input data-field="signature" placeholder="base64" autocomplete="off">
+  </label>
+  <p class="hint">
+    Sign a message, then change one character of it and press Verify.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Nothing yet.</p></div>
+</div>

@@ -1,0 +1,22 @@
+<div class="card">
+  <h2>Detections</h2>
+  <p class="hint">
+    One per line: <code>label confidence x y width height</code>.
+    Anything under 0.45 confidence is left out rather than asserted.
+  </p>
+  <label class="field">
+    <span>Boxes</span>
+    <textarea data-field="detections" placeholder="person 0.94 120 30 70 190
+dog 0.88 40 150 80 70
+frisbee 0.62 200 60 30 30
+umbrella 0.31 10 10 20 40"></textarea>
+  </label>
+  <div class="buttons">
+    <button data-action="compute" data-primary>Caption</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Caption</h2>
+  <div id="out" class="out"><p class="empty">Leave it empty to use the sample.</p></div>
+</div>

@@ -1,0 +1,43 @@
+<div class="card">
+  <h2>Banner</h2>
+  <p class="hint">
+    Letters A to Z, digits, and <code>! ? . , - : '</code>. Anything else becomes
+    a space. Lines wrap at the column width you choose.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Text</span>
+      <input data-field="text" value="HELLO" autocomplete="off" spellcheck="false">
+    </label>
+    <label class="field">
+      <span>Fill character</span>
+      <input data-field="fill" value="#" maxlength="1">
+    </label>
+    <label class="field">
+      <span>Wrap at</span>
+      <input data-field="width" type="number" value="80" min="12" max="200">
+    </label>
+    <div class="tight"><button data-action="render" data-primary>Render</button></div>
+  </div>
+  <div class="buttons" id="fills">
+    <button class="quiet" data-fill="#">#</button>
+    <button class="quiet" data-fill="*">*</button>
+    <button class="quiet" data-fill="@">@</button>
+    <button class="quiet" data-fill="0">0</button>
+    <button class="quiet" data-fill="=">=</button>
+  </div>
+</div>
+
+<div class="card" data-boot="render">
+  <h2>Output</h2>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+document.getElementById('fills').addEventListener('click', function (event) {
+  const button = event.target.closest('[data-fill]');
+  if (!button) { return; }
+  document.querySelector('[data-field="fill"]').value = button.dataset.fill;
+  RJ.send('render');
+});
+</script>

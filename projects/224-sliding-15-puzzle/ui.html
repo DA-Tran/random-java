@@ -1,0 +1,34 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Click a tile next to the gap to slide it. Shuffling is done by making legal
+    moves, so the puzzle is always solvable.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Board side</span>
+      <input data-field="size" type="number" value="4" min="2" max="8">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>Shuffle</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Reset</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('slide', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

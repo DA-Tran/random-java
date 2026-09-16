@@ -1,0 +1,27 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">a and d move, space fires. One bullet per column at a time.</p>
+  <div class="row">
+    <div class="tight"><button data-action="generate" data-primary>New game</button></div>
+    <div class="tight"><button class="ghost" data-action="fire">Fire</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Tick</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Autopilot</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function (event) {
+    var map = { ArrowLeft: 'left', a: 'left', ArrowRight: 'right', d: 'right', ' ': 'fire' };
+    var action = map[event.key];
+    if (!action) { return; }
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') { return; }
+    event.preventDefault();
+    RJ.send(action);
+  });
+</script>

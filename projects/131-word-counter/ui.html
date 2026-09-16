@@ -1,0 +1,35 @@
+<div class="card">
+  <h2>Text</h2>
+  <p class="hint">
+    Counts update as you type. A token needs at least one letter or digit to be
+    a word, so a stray dash does not inflate the total.
+  </p>
+  <label class="field">
+    <span>Your text</span>
+    <textarea data-field="text" id="text" spellcheck="false" style="min-height:220px"
+      placeholder="Paste or type here...">The quick brown fox jumps over the lazy dog. The dog barks, and the fox runs away!
+
+A second paragraph follows, to show how paragraphs and sentences are counted separately.</textarea>
+  </label>
+  <div class="buttons">
+    <button data-action="count" data-primary>Count</button>
+    <button class="quiet" id="clear">Clear</button>
+  </div>
+</div>
+
+<div class="card" data-boot="count">
+  <h2>Counts</h2>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+let typingTimer = null;
+document.getElementById('text').addEventListener('input', function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(function () { RJ.send('count'); }, 250);
+});
+document.getElementById('clear').addEventListener('click', function () {
+  document.getElementById('text').value = '';
+  document.getElementById('out').innerHTML = '<p class="empty">Nothing to count.</p>';
+});
+</script>

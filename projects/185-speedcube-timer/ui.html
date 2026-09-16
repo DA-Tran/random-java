@@ -1,0 +1,73 @@
+<div class="card">
+  <h2>Timer</h2>
+  <p class="hint">
+    Press space to start the inspection countdown, space again to start timing,
+    and space once more to stop. An average of 5 drops the best and the worst
+    and means the middle three, which is how competitions judge it.
+  </p>
+  <div id="scramble" class="mono" style="color:var(--accent);margin-bottom:14px"></div>
+  <div id="clock" style="font-size:54px;font-weight:650;letter-spacing:-.02em">0.00</div>
+  <div class="buttons">
+    <button id="go" data-primary>Start</button>
+    <button class="ghost" data-action="scramble">New scramble</button>
+    <button class="quiet" id="plus2">+2 last</button>
+    <button class="quiet" id="dnf">DNF last</button>
+    <button class="quiet" data-action="clear">Clear session</button>
+  </div>
+  <input type="hidden" data-field="seconds" id="secs">
+  <input type="hidden" data-field="penalty" id="pen">
+  <input type="hidden" data-field="scramble" id="scr">
+</div>
+
+<div class="card" data-boot="scramble">
+  <h2>Session</h2>
+  <div id="out" class="out"></div>
+  <div id="items"></div>
+</div>
+
+<script>
+(function () {
+  let state = 'idle', start = 0, tick = null, inspect = 15;
+  const clock = document.getElementById('clock');
+
+  function show(v) { clock.textContent = v; }
+
+  function post(action, extra) {
+    const body = Object.assign({action: action}, extra || {});
+    return fetch('api', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)}).then(r => r.json()).then(function (d) {
+        RJ.render(d);
+        if (d.scramble) { document.getElementById('scramble').textContent = d.scramble;
+                          document.getElementById('scr').value = d.scramble; }
+        return d;
+      });
+  }
+
+  function press() {
+    if (state === 'idle') {
+      state = 'inspect'; inspect = 15;
+      tick = setInterval(function () { inspect--; show(inspect > 0 ? inspect : 'GO'); }, 1000);
+      show(15);
+    } else if (state === 'inspect') {
+      clearInterval(tick); state = 'running'; start = Date.now();
+      tick = setInterval(function () { show(((Date.now()-start)/1000).toFixed(2)); }, 31);
+    } else {
+      clearInterval(tick); state = 'idle';
+      const secs = (Date.now() - start) / 1000;
+      show(secs.toFixed(2));
+      post('add', {seconds: secs, penalty: '', scramble: document.getElementById('scr').value});
+    }
+  }
+
+  document.getElementById('go').addEventListener('click', press);
+  document.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' && e.target.tagName !== 'INPUT') { e.preventDefault(); press(); }
+  });
+  document.getElementById('plus2').addEventListener('click', function () {
+    post('add', {seconds: 0, penalty: '+2', scramble: 'penalty applied to a new entry'});
+  });
+  document.getElementById('dnf').addEventListener('click', function () {
+    post('add', {seconds: 0, penalty: 'DNF', scramble: document.getElementById('scr').value});
+  });
+})();
+</script>

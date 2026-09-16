@@ -1,0 +1,74 @@
+<div class="card">
+  <h2>Game</h2>
+  <p class="hint">
+    The computer searches the whole game tree with minimax, so it cannot be
+    beaten. A draw is the best result available against it.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Opponent</span>
+      <select data-field="mode">
+        <option value="computer">Computer (unbeatable)</option>
+        <option value="two-player">Two players</option>
+      </select>
+    </label>
+    <div class="tight"><button data-action="new" data-primary>New game</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="state">
+  <h2>Board</h2>
+  <div id="grid" class="ttt"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<style>
+.ttt { display: grid; grid-template-columns: repeat(3, 84px); gap: 8px; margin-bottom: 20px; }
+.ttt button {
+  height: 84px;
+  font-size: 34px;
+  font-weight: 600;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 0;
+}
+.ttt button:hover:not(:disabled) { border-color: var(--accent); }
+.ttt button:disabled { cursor: default; }
+.ttt button.win { background: var(--accent); color: #08201e; border-color: var(--accent); }
+</style>
+
+<script>
+function drawBoard(data) {
+  if (!data || !data.cells) { return; }
+  const grid = document.getElementById('grid');
+  const line = data.line || [];
+  grid.innerHTML = '';
+  data.cells.forEach(function (value, index) {
+    const button = document.createElement('button');
+    button.textContent = value;
+    button.dataset.cell = index;
+    if (line.indexOf(index) >= 0) { button.classList.add('win'); }
+    if (value !== '' || data.over) { button.disabled = true; }
+    grid.appendChild(button);
+  });
+}
+
+document.addEventListener('click', async function (event) {
+  const square = event.target.closest('[data-cell]');
+  if (square) {
+    drawBoard(await RJ.send('play', { cell: Number(square.dataset.cell) }));
+    return;
+  }
+  const action = event.target.closest('[data-action]');
+  if (action) {
+    // The shared handler already fired the request; redraw from a fresh state.
+    setTimeout(async function () { drawBoard(await RJ.api('state', {})); }, 0);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  setTimeout(async function () { drawBoard(await RJ.api('state', {})); }, 0);
+});
+</script>

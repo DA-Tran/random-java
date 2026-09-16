@@ -1,0 +1,55 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    The sort runs to completion first, recording a frame at every comparison and
+    swap. Playback then walks those frames, so stepping backwards is free.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Values</span>
+      <input data-field="size" type="number" value="24" min="4" max="80">
+    </label>
+    <label class="field">
+      <span>Algorithm</span>
+      <select data-field="algorithm">
+        <option value="bubble">Bubble</option>
+        <option value="insertion">Insertion</option>
+        <option value="selection">Selection</option>
+        <option value="merge">Merge</option>
+        <option value="quick">Quick</option>
+      </select>
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New values</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
+    <div class="tight"><button class="ghost" id="play">Play</button></div>
+    <div class="tight"><button class="quiet" data-action="rewind">Rewind</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Array</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+let playing = null;
+document.getElementById('play').addEventListener('click', async function () {
+  if (playing) {
+    clearInterval(playing);
+    playing = null;
+    this.textContent = 'Play';
+    return;
+  }
+  this.textContent = 'Pause';
+  const button = this;
+  playing = setInterval(async function () {
+    const data = await RJ.send('step');
+    if (data && data.result === 'Sorted') {
+      clearInterval(playing);
+      playing = null;
+      button.textContent = 'Play';
+    }
+  }, 60);
+});
+</script>

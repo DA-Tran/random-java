@@ -1,0 +1,27 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">Arrow keys or w a s d. Cells show the exponent: 1 is 2, b is 2048.</p>
+  <div class="row">
+    <div class="tight"><button data-action="generate" data-primary>New game</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Best move</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Autoplay</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function (event) {
+    var map = { ArrowLeft: 'left', a: 'left', ArrowUp: 'up', w: 'up',
+                ArrowRight: 'right', d: 'right', ArrowDown: 'down', s: 'down' };
+    var action = map[event.key];
+    if (!action) { return; }
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') { return; }
+    event.preventDefault();
+    RJ.send(action);
+  });
+</script>

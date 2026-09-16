@@ -1,0 +1,20 @@
+<div class="card">
+  <h2>Price history</h2>
+  <p class="hint">Commas, spaces or newlines. At least three prices.</p>
+  <label class="field">
+    <span>Prices</span>
+    <textarea data-field="prices" placeholder="101.2, 100.8, 102.4, 103.1, 102.7, 104.0, 105.2"></textarea>
+  </label>
+  <div class="row">
+    <label class="field">
+      <span>Steps ahead</span>
+      <input data-field="horizon" type="number" value="5" min="1" max="60">
+    </label>
+    <div class="tight"><button data-action="compute" data-primary>Project</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Projection</h2>
+  <div id="out" class="out"><p class="empty">Nothing yet.</p></div>
+</div>

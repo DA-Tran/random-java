@@ -1,0 +1,29 @@
+<div class="card">
+  <h2>Job description</h2>
+  <p class="hint">Put optional skills under a "Nice to have:" heading and they will count for less.</p>
+  <label class="field">
+    <span>Advert</span>
+    <textarea data-field="jd" placeholder="Requirements:
+- 5+ years of Java
+- SQL
+Nice to have:
+- Kafka"></textarea>
+  </label>
+</div>
+
+<div class="card">
+  <h2>CV</h2>
+  <p class="hint">Repeating a skill gains nothing. Coverage is what is scored.</p>
+  <label class="field">
+    <span>Candidate</span>
+    <textarea data-field="cv" placeholder="7 years building backend services in Java..."></textarea>
+  </label>
+  <div class="buttons">
+    <button data-action="compute" data-primary>Screen</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Leave both boxes empty to run the built-in example.</p></div>
+</div>

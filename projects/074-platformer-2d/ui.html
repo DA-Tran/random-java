@@ -1,0 +1,28 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">a and d run, w jumps. # is ground, o a coin, G the goal.</p>
+  <div class="row">
+    <div class="tight"><button data-action="generate" data-primary>Restart</button></div>
+    <div class="tight"><button class="ghost" data-action="jump">Jump</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Wait</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Autorun</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Level</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function (event) {
+    var map = { ArrowLeft: 'left', a: 'left', ArrowRight: 'right', d: 'right',
+                ArrowUp: 'jump', w: 'jump', ' ': 'jump' };
+    var action = map[event.key];
+    if (!action) { return; }
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') { return; }
+    event.preventDefault();
+    RJ.send(action);
+  });
+</script>

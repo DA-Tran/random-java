@@ -1,0 +1,28 @@
+<div class="card">
+  <h2>Send</h2>
+  <p class="hint">
+    Alice and Bob each combine their own private key with the other's public
+    key and arrive at the same secret, which never crosses the wire.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Message</span>
+      <input data-field="label" placeholder="see you at six" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Route</span>
+      <input data-field="meta" value="alice to bob" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="add" data-primary>Send</button></div>
+  </div>
+  <div class="buttons">
+    <button class="quiet" data-action="clear">Clear</button>
+  </div>
+</div>
+
+<div class="card" data-boot="list">
+  <h2>Messages</h2>
+  <p class="hint">Decrypted for you; the grey line is all the server ever holds.</p>
+  <div id="items"><p class="empty">Nothing sent yet.</p></div>
+  <div id="out" class="out"></div>
+</div>

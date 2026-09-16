@@ -1,0 +1,33 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">Arrow keys or w a s d. A turn straight back on itself is ignored.</p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <input data-field="size" type="number" value="12" min="5" max="40">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New game</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Tick</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Autopilot</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function (event) {
+    var map = {
+      ArrowUp: 'UP', ArrowDown: 'DOWN', ArrowLeft: 'LEFT', ArrowRight: 'RIGHT',
+      w: 'UP', s: 'DOWN', a: 'LEFT', d: 'RIGHT'
+    };
+    var direction = map[event.key];
+    if (!direction) { return; }
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') { return; }
+    event.preventDefault();
+    RJ.send('turn', { direction: direction });
+  });
+</script>

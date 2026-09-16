@@ -1,0 +1,27 @@
+<div class="card">
+  <h2>Measurements</h2>
+  <p class="hint">Metric takes centimetres and kilograms. Imperial takes total inches and pounds.</p>
+  <div class="row">
+    <label class="field">
+      <span>Units</span>
+      <select data-field="units">
+        <option value="metric">Metric (cm / kg)</option>
+        <option value="imperial">Imperial (in / lb)</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Height</span>
+      <input data-field="height" type="number" step="0.1" value="175">
+    </label>
+    <label class="field">
+      <span>Weight</span>
+      <input data-field="weight" type="number" step="0.1" value="70">
+    </label>
+    <div class="tight"><button data-action="compute" data-primary>Calculate</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Enter your measurements above.</p></div>
+</div>

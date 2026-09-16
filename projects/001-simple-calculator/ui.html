@@ -1,0 +1,31 @@
+<div class="card">
+  <h2>Expression</h2>
+  <p class="hint">Supports <code>+ - * / %</code>, <code>^</code> for powers, parentheses and a leading minus.</p>
+  <div class="row">
+    <label class="field">
+      <span>Expression</span>
+      <input data-field="input" value="2 * (3 + 4) ^ 2" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="tight"><button data-action="compute" data-primary>Evaluate</button></div>
+  </div>
+  <div class="buttons" id="samples">
+    <button class="quiet" data-sample="2 + 3 * 4">2 + 3 * 4</button>
+    <button class="quiet" data-sample="(8 - 3) ^ 2">(8 - 3) ^ 2</button>
+    <button class="quiet" data-sample="22 % 7">22 % 7</button>
+    <button class="quiet" data-sample="-5 + 2.5 * 4">-5 + 2.5 * 4</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Evaluate an expression to see the answer.</p></div>
+</div>
+
+<script>
+document.getElementById('samples').addEventListener('click', function (event) {
+  const button = event.target.closest('[data-sample]');
+  if (!button) { return; }
+  document.querySelector('[data-field="input"]').value = button.dataset.sample;
+  RJ.send('compute');
+});
+</script>

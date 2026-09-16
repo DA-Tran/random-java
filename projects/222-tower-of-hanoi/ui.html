@@ -1,0 +1,15 @@
+<div class="card">
+  <h2>Controls</h2>
+  <div class="row">
+    <label class="field"><span>Size</span>
+      <input data-field="size" type="number" value="8" min="1" max="20"></label>
+    <div class="tight"><button data-action="solve" data-primary>Solve</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
+    <div class="tight"><button class="quiet" data-action="count">Count all</button></div>
+  </div>
+</div>
+<div class="card" data-boot="solve">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>

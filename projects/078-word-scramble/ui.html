@@ -1,0 +1,18 @@
+<div class="card">
+  <h2>Unscramble</h2>
+  <p class="hint">Any real word using exactly these letters counts, not just the one I picked.</p>
+  <div class="row">
+    <label class="field">
+      <span>Your guess</span>
+      <input data-field="guess" placeholder="type the word" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="guess" data-primary>Guess</button></div>
+    <div class="tight"><button class="ghost" data-action="reveal">Skip</button></div>
+    <div class="tight"><button class="quiet" data-action="start">New game</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Scrambled</h2>
+  <div id="out" class="out"><p class="empty">Press New game.</p></div>
+</div>

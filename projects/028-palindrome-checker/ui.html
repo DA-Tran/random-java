@@ -1,0 +1,31 @@
+<div class="card">
+  <h2>Text</h2>
+  <p class="hint">Case, spaces and punctuation are ignored, so a whole phrase works.</p>
+  <div class="row">
+    <label class="field">
+      <span>Text to check</span>
+      <input data-field="input" value="A man, a plan, a canal: Panama" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="tight"><button data-action="compute" data-primary>Check</button></div>
+  </div>
+  <div class="buttons" id="samples">
+    <button class="quiet" data-sample="racecar">racecar</button>
+    <button class="quiet" data-sample="Never odd or even">Never odd or even</button>
+    <button class="quiet" data-sample="12321">12321</button>
+    <button class="quiet" data-sample="hello world">hello world</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Check something to see the answer.</p></div>
+</div>
+
+<script>
+document.getElementById('samples').addEventListener('click', function (event) {
+  const button = event.target.closest('[data-sample]');
+  if (!button) { return; }
+  document.querySelector('[data-field="input"]').value = button.dataset.sample;
+  RJ.send('compute');
+});
+</script>

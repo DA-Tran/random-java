@@ -1,0 +1,22 @@
+<div class="card">
+  <h2>Scan</h2>
+  <p class="hint">
+    Localhost only. Type <code>common</code>, a single port, or a range like
+    <code>8000-8100</code>.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Ports</span>
+      <input data-field="label" value="common" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="add" data-primary>Scan</button></div>
+    <div class="tight"><button class="quiet" data-action="clear">Clear</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="list">
+  <h2>Results</h2>
+  <p class="hint">Closed ports are hidden on large scans. Open ones always show.</p>
+  <div id="items"><p class="empty">Nothing scanned yet.</p></div>
+  <div id="out" class="out"></div>
+</div>

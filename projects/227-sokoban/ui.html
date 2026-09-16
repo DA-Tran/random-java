@@ -1,0 +1,26 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">Arrow keys or w a s d. $ crate, . goal, * crate home, @ you.</p>
+  <div class="row">
+    <div class="tight"><button data-action="generate" data-primary>New level</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Reset</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Level</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function (event) {
+    var map = { ArrowUp: 'up', w: 'up', ArrowDown: 'down', s: 'down',
+                ArrowLeft: 'left', a: 'left', ArrowRight: 'right', d: 'right' };
+    var action = map[event.key];
+    if (!action) { return; }
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') { return; }
+    event.preventDefault();
+    RJ.send(action);
+  });
+</script>

@@ -1,0 +1,24 @@
+<div class="card">
+  <h2>Puzzle</h2>
+  <p class="hint">
+    81 characters, left to right and top to bottom. Use <code>.</code> or
+    <code>0</code> for an empty cell; anything else is ignored, so line breaks
+    are fine.
+  </p>
+  <label class="field">
+    <span>Grid</span>
+    <textarea data-field="puzzle" spellcheck="false">53..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79</textarea>
+  </label>
+  <div class="buttons">
+    <button data-action="load" data-primary>Load</button>
+    <button class="ghost" data-action="solve">Solve</button>
+    <button class="quiet" data-action="sample">Sample</button>
+    <button class="quiet" data-action="hard">Hard one</button>
+  </div>
+</div>
+
+<div class="card" data-boot="load">
+  <h2>Grid</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>

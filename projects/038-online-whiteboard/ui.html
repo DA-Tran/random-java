@@ -1,0 +1,19 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">A shared drawing surface you can paint, erase and clear.</p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <input data-field="size" type="number" value="12" min="4" max="40">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>

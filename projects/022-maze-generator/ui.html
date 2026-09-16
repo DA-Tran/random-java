@@ -1,0 +1,24 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Carved with randomised depth-first search, so there is exactly one route
+    between any two points. Solved with breadth-first search, which finds the
+    shortest one.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Cells across</span>
+      <input data-field="size" type="number" value="10" min="3" max="30">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New maze</button></div>
+    <div class="tight"><button class="ghost" data-action="solve">Solve</button></div>
+    <div class="tight"><button class="quiet" data-action="clear">Clear route</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Maze</h2>
+  <p class="hint">S is the start, E is the exit, highlighted cells are the shortest route.</p>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>

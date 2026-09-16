@@ -1,0 +1,33 @@
+<div class="card">
+  <h2>Add a task</h2>
+  <p class="hint">Outstanding tasks sort to the top, highest priority first.</p>
+  <div class="row">
+    <label class="field">
+      <span>Task</span>
+      <input data-field="label" placeholder="What needs doing" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Priority</span>
+      <select data-field="priority">
+        <option value="normal">Normal</option>
+        <option value="high">High</option>
+        <option value="low">Low</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Note</span>
+      <input data-field="meta" placeholder="Optional" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="add" data-primary>Add</button></div>
+  </div>
+  <div class="buttons">
+    <button class="quiet" data-action="clearDone">Clear completed</button>
+    <button class="quiet" data-action="clear">Clear everything</button>
+  </div>
+</div>
+
+<div class="card" data-boot="list">
+  <h2>Tasks</h2>
+  <div id="items"><p class="empty">Nothing on the list yet.</p></div>
+  <div id="out" class="out"></div>
+</div>

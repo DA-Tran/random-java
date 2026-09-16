@@ -1,0 +1,17 @@
+<div class="card">
+  <h2>Play</h2>
+  <p class="hint">Guess a hidden number in a range, with higher or lower feedback and limited attempts.</p>
+  <div class="row">
+    <label class="field">
+      <span>Your move</span>
+      <input data-field="move" placeholder="your move" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="play" data-primary>Play</button></div>
+    <div class="tight"><button class="ghost" data-action="new">New game</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="state">
+  <h2>Result</h2>
+  <div id="out" class="out"></div>
+</div>

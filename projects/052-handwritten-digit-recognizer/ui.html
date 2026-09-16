@@ -1,0 +1,39 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Click cells to draw a digit, then Classify. Position and size are removed
+    before matching, so it works anywhere on the canvas at any size.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Canvas size</span>
+      <input data-field="size" type="number" value="12" min="5" max="40">
+    </label>
+    <div class="tight"><button data-action="solve" data-primary>Classify</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Demo digit</button></div>
+    <div class="tight"><button class="quiet" data-action="clear">Clear</button></div>
+    <div class="tight"><button class="quiet" data-action="generate">Resize</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Canvas</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  // The shared board renderer draws cells but does not make them clickable,
+  // since most grid projects are read-only. Delegating from the container
+  // means this keeps working after every re-render without rewiring.
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('paint', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

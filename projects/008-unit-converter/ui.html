@@ -1,0 +1,58 @@
+<div class="card">
+  <h2>Convert</h2>
+  <p class="hint">Pick a category and the unit lists refill themselves.</p>
+  <div class="row">
+    <label class="field">
+      <span>Category</span>
+      <select data-field="category" id="category">
+        <option value="length">Length</option>
+        <option value="mass">Mass</option>
+        <option value="volume">Volume</option>
+        <option value="speed">Speed</option>
+        <option value="data">Data</option>
+        <option value="temperature">Temperature</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Value</span>
+      <input data-field="value" type="number" step="any" value="1">
+    </label>
+    <label class="field">
+      <span>From</span>
+      <select data-field="from" id="from"></select>
+    </label>
+    <label class="field">
+      <span>To</span>
+      <select data-field="to" id="to"></select>
+    </label>
+    <div class="tight"><button data-action="convert" data-primary>Convert</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Result</h2>
+  <div id="out" class="out"><p class="empty">Pick units and convert.</p></div>
+</div>
+
+<script>
+async function refillUnits(convertAfter) {
+  const data = await RJ.api('units', {});
+  const from = document.getElementById('from');
+  const to = document.getElementById('to');
+  from.innerHTML = '';
+  to.innerHTML = '';
+  data.units.forEach(function (unit, index) {
+    const a = document.createElement('option');
+    a.value = unit; a.textContent = unit; from.appendChild(a);
+    const b = document.createElement('option');
+    b.value = unit; b.textContent = unit; to.appendChild(b);
+    if (index === 1) { to.value = unit; }
+  });
+  if (convertAfter) { RJ.send('convert'); }
+}
+
+document.getElementById('category').addEventListener('change', function () {
+  refillUnits(false);
+});
+document.addEventListener('DOMContentLoaded', function () { refillUnits(false); });
+</script>

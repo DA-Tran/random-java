@@ -1,0 +1,30 @@
+<div class="card">
+  <h2>Answer</h2>
+  <p class="hint">
+    Everyone answers every question. Speed adds a bonus; it does not decide the round.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Player</span>
+      <input data-field="player" value="Alex" autocomplete="off">
+    </label>
+    <label class="field">
+      <span>Option (0-3)</span>
+      <input data-field="choice" type="number" value="0" min="0" max="3">
+    </label>
+    <label class="field">
+      <span>Seconds taken</span>
+      <input data-field="seconds" type="number" value="5" min="0" max="120">
+    </label>
+    <div class="tight"><button data-action="answer" data-primary>Answer</button></div>
+  </div>
+  <div class="buttons">
+    <button class="ghost" data-action="next">Next question</button>
+    <button class="quiet" data-action="start">Reset scores</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Round</h2>
+  <div id="out" class="out"><p class="empty">Press Reset scores to begin.</p></div>
+</div>

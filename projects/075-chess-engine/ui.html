@@ -1,0 +1,19 @@
+<div class="card">
+  <h2>Play</h2>
+  <p class="hint">Moves like <code>e2e4</code>. No castling, en passant, or under-promotion.</p>
+  <div class="row">
+    <label class="field">
+      <span>Your move</span>
+      <input data-field="move" placeholder="e2e4" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="move" data-primary>Move</button></div>
+    <div class="tight"><button class="ghost" data-action="step">Engine plays</button></div>
+    <div class="tight"><button class="quiet" data-action="generate">New game</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
