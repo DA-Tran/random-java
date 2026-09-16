@@ -681,7 +681,7 @@ PROJECTS = [
      "Get everyone across without leaving the wrong pair alone together."),
     (246, "water-jug", "TOOL", True,
      "Measure an exact amount using jugs that have no markings."),
-    (247, "rush-hour", "GRID", False,
+    (247, "rush-hour", "GRID", True,
      "Slide blocking cars aside to drive the red car out of the jam."),
     (248, "knights-tour", "GRID", True,
      "Move a knight to every square on the board exactly once."),

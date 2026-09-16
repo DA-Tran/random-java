@@ -50,6 +50,7 @@ import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.rivercrossing.RiverCrossing;
+import com.randomjava.projects.rushhour.RushHour;
 import com.randomjava.projects.shikaku.Shikaku;
 import com.randomjava.projects.waterjug.WaterJug;
 import com.randomjava.projects.zebrapuzzle.ZebraPuzzle;
@@ -1016,6 +1017,18 @@ final class ProjectTests {
             }
         }
         return true;
+    }
+
+    private static int occupied(char[][] grid) {
+        int count = 0;
+        for (char[] row : grid) {
+            for (char cell : row) {
+                if (cell != '.') {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     private static boolean refused(Runnable action) {
@@ -3328,6 +3341,54 @@ final class ProjectTests {
             t.equal("there are fourteen clues", 14, ZebraPuzzle.clues().size());
             t.check("the api answers", ok(call("zebra-puzzle", "compute",
                     "input", "zebra")));
+        });
+
+        h.group("247 Rush Hour", t -> {
+            // Generation uses the solver as its quality filter, so every jam
+            // must actually be solvable and must take some untangling.
+            int unsolvable = 0;
+            int trivial = 0;
+            for (int seed = 0; seed < 8; seed++) {
+                RushHour jam = new RushHour(new java.util.Random(seed));
+                List<String> steps = jam.solve();
+                if (steps == null) {
+                    unsolvable++;
+                } else if (steps.size() < 5) {
+                    trivial++;
+                }
+            }
+            t.equal("every generated jam has a way out", 0, unsolvable);
+            t.equal("and none of them is a two-move giveaway", 0, trivial);
+
+            // Cars never change size, so the number of occupied cells is
+            // invariant - which catches a solved board drawn with two cars in
+            // the same place.
+            int changed = 0;
+            int notOut = 0;
+            for (int seed = 0; seed < 8; seed++) {
+                RushHour jam = new RushHour(new java.util.Random(seed));
+                int before = occupied(jam.cells());
+                jam.run();
+                if (!jam.solved()) {
+                    notOut++;
+                }
+                if (occupied(jam.cells()) != before) {
+                    changed++;   // cars overlapped or vanished
+                }
+            }
+            t.equal("solving really does free the red car", 0, notOut);
+            t.equal("and leaves as many cells occupied as it started with", 0, changed);
+
+            RushHour jam = new RushHour(new java.util.Random(1));
+            int[] before = jam.offsets();
+            t.check("a car cannot slide through another",
+                    !jam.slide(0, 5) || jam.solved());
+            jam.restart();
+            t.check("restart puts every car back",
+                    java.util.Arrays.equals(before, jam.offsets()));
+            t.check("there is no car at that index", refused(() -> jam.slide(99, 1)));
+            t.check("the api generates", ok(call("rush-hour", "generate", "cars", 6)));
+            t.check("the api solves", ok(call("rush-hour", "solve")));
         });
 
         h.group("245 River Crossing", t -> {

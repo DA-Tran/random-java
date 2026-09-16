@@ -1,19 +1,23 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Slide blocking cars aside to drive the red car out of the jam.</p>
+  <p class="hint">
+    <code>*</code> is the red car; the letters are blocking it. Every car is
+    stuck in its own row or column and can only slide along it. Get the red car
+    out by the right-hand edge of row 2. Solve shows the shortest way out.
+  </p>
   <div class="row">
     <label class="field">
-      <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <span>Blocking cars</span>
+      <input data-field="cars" type="number" value="8" min="3" max="11">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>New jam</button></div>
+    <div class="tight"><button class="ghost" data-action="restart">Restart</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
 <div class="card" data-boot="generate">
-  <h2>Board</h2>
+  <h2>Jam</h2>
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>

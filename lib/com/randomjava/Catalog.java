@@ -288,7 +288,7 @@ public final class Catalog {
             new Meta(244, "zebra-puzzle", "Zebra Puzzle", "Logic and Puzzle Games", Kind.TOOL, Difficulty.ADVANCED, "Work out who owns the zebra from a list of constraints, by elimination.", "", true),
             new Meta(245, "river-crossing", "River Crossing", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Get everyone across without leaving the wrong pair alone together.", "", true),
             new Meta(246, "water-jug", "Water Jug", "Logic and Puzzle Games", Kind.TOOL, Difficulty.INTERMEDIATE, "Measure an exact amount using jugs that have no markings.", "", true),
-            new Meta(247, "rush-hour", "Rush Hour", "Logic and Puzzle Games", Kind.GRID, Difficulty.ADVANCED, "Slide blocking cars aside to drive the red car out of the jam.", "", false),
+            new Meta(247, "rush-hour", "Rush Hour", "Logic and Puzzle Games", Kind.GRID, Difficulty.ADVANCED, "Slide blocking cars aside to drive the red car out of the jam.", "", true),
             new Meta(248, "knights-tour", "Knights Tour", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Move a knight to every square on the board exactly once.", "", true),
             new Meta(249, "word-search-generator", "Word Search Generator", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Hide a word list in a grid of letters, then solve it back.", "", true),
             new Meta(250, "tangram", "Tangram", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Fit seven flat shapes together to match a silhouette exactly.", "", false),

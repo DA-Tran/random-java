@@ -2712,7 +2712,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "advanced",
-    "done": false,
+    "done": true,
     "description": "Slide blocking cars aside to drive the red car out of the jam.",
     "stack": ""
   },
