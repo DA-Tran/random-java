@@ -671,7 +671,7 @@ PROJECTS = [
      "Place building heights so each edge clue counts the skyline visible from it."),
     (241, "shikaku", "GRID", True,
      "Cut a grid into rectangles, each containing one number equal to its area."),
-    (242, "magic-square", "GRID", False,
+    (242, "magic-square", "GRID", True,
      "Arrange numbers so every row, column and diagonal adds to the same total."),
     (243, "cryptarithm", "TOOL", False,
      "Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter."),

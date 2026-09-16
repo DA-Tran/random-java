@@ -1,19 +1,40 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Arrange numbers so every row, column and diagonal adds to the same total.</p>
+  <p class="hint">
+    Every row, every column and both diagonals add to the same total - and that
+    total is fixed by the numbers themselves, not chosen. Pick a number, then
+    click a blank cell to place it; click the same number again to clear.
+  </p>
   <div class="row">
     <label class="field">
       <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <input data-field="size" type="number" value="4" min="3" max="10">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <label class="field">
+      <span>Number to place</span>
+      <input data-field="value" type="number" value="1" min="1" max="100">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
 <div class="card" data-boot="generate">
-  <h2>Board</h2>
+  <h2>Square</h2>
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('place', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

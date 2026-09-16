@@ -37,6 +37,7 @@ import com.randomjava.projects.sliding15puzzle.Sliding15Puzzle;
 import com.randomjava.projects.minesweeper.Minesweeper;
 import com.randomjava.projects.game2048.Game2048;
 import com.randomjava.projects.lightsout.LightsOut;
+import com.randomjava.projects.magicsquare.MagicSquare;
 import com.randomjava.projects.binarypuzzle.BinaryPuzzle;
 import com.randomjava.projects.futoshiki.Futoshiki;
 import com.randomjava.projects.hitori.Hitori;
@@ -983,6 +984,18 @@ final class ProjectTests {
 
     private static String nonogramShow(char[] line) {
         return line == null ? "impossible" : String.valueOf(line);
+    }
+
+    private static int countBlanks(MagicSquare board) {
+        int blanks = 0;
+        for (int row = 0; row < board.size(); row++) {
+            for (int column = 0; column < board.size(); column++) {
+                if (board.cell(row, column) == 0) {
+                    blanks++;
+                }
+            }
+        }
+        return blanks;
     }
 
     private static boolean refused(Runnable action) {
@@ -2343,6 +2356,72 @@ final class ProjectTests {
             t.check("an unreachable board is refused rather than guessed",
                     corner.solvable() || refused(corner::applySolution));
             t.check("an off-board press is refused", refused(() -> l.press(999)));
+        });
+
+        h.group("242 Magic Square", t -> {
+            // The constant is forced by the numbers, not chosen: 1..n*n sums
+            // to n*n(n*n+1)/2 and the rows split that into n equal shares.
+            t.equal("a 3x3 must use 15", 15, MagicSquare.magicConstant(3));
+            t.equal("a 4x4 must use 34", 34, MagicSquare.magicConstant(4));
+            t.equal("a 5x5 must use 65", 65, MagicSquare.magicConstant(5));
+
+            // Three unrelated methods, chosen by n mod 4, and each has to
+            // actually produce a magic square across its whole family.
+            int notMagic = 0;
+            StringBuilder methods = new StringBuilder();
+            for (int n = 3; n <= 10; n++) {
+                if (!MagicSquare.isMagic(MagicSquare.construct(n))) {
+                    notMagic++;
+                }
+                methods.append(n).append('=').append(MagicSquare.methodFor(n)).append(' ');
+            }
+            t.equal("every side from 3 to 10 builds a genuine magic square", 0, notMagic);
+            t.equal("odd sides go to Siamese", "Siamese", MagicSquare.methodFor(7));
+            t.equal("multiples of four to the lattice",
+                    "complement lattice", MagicSquare.methodFor(8));
+            t.equal("and the awkward family to LUX", "LUX", MagicSquare.methodFor(6));
+
+            // 2x2 is impossible, and the argument is arithmetic rather than a
+            // search that ran out of patience.
+            t.check("a 2x2 is refused outright",
+                    refused(() -> MagicSquare.construct(2)));
+
+            // isMagic has to be strict about more than the sums.
+            t.check("the classic 3x3 passes", MagicSquare.isMagic(new int[][] {
+                {2, 7, 6}, {9, 5, 1}, {4, 3, 8}}));
+            t.check("a square with the right sums but a repeat is refused",
+                    !MagicSquare.isMagic(new int[][] {{5, 5, 5}, {5, 5, 5}, {5, 5, 5}}));
+            t.check("so is one whose diagonals miss", !MagicSquare.isMagic(new int[][] {
+                {2, 7, 6}, {9, 5, 1}, {4, 8, 3}}));
+            t.check("and one using numbers out of range",
+                    !MagicSquare.isMagic(new int[][] {{0, 7, 8}, {9, 5, 1}, {6, 3, 6}}));
+
+            // Rotating a magic square leaves it magic, which is why completion
+            // is judged by the rules rather than against one stored answer.
+            int[][] original = MagicSquare.construct(5);
+            int[][] turned = new int[5][5];
+            for (int row = 0; row < 5; row++) {
+                for (int column = 0; column < 5; column++) {
+                    turned[column][4 - row] = original[row][column];
+                }
+            }
+            t.check("a quarter turn of a magic square is still magic",
+                    MagicSquare.isMagic(turned));
+            t.check("and it is a different arrangement",
+                    !java.util.Arrays.deepEquals(original, turned));
+
+            MagicSquare board = new MagicSquare(new java.util.Random(5));
+            board.generate(4);
+            t.check("some cells are hidden", !board.missing().isEmpty());
+            t.equal("and the hidden ones are exactly what is missing",
+                    board.missing().size(), countBlanks(board));
+            board.solve();
+            t.check("solving fills a magic square", board.complete());
+            t.check("an out-of-range number is refused",
+                    refused(() -> board.place(0, 0, 99)));
+            t.check("an unplayable size is refused", refused(() -> board.generate(2)));
+            t.check("the api generates", ok(call("magic-square", "generate", "size", 5)));
+            t.check("the api solves", ok(call("magic-square", "solve")));
         });
 
         h.group("241 Shikaku", t -> {
