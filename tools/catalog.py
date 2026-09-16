@@ -685,7 +685,7 @@ PROJECTS = [
      "Slide blocking cars aside to drive the red car out of the jam."),
     (248, "knights-tour", "GRID", True,
      "Move a knight to every square on the board exactly once."),
-    (249, "word-search-generator", "GRID", False,
+    (249, "word-search-generator", "GRID", True,
      "Hide a word list in a grid of letters, then solve it back."),
     (250, "tangram", "GRID", False,
      "Fit seven flat shapes together to match a silhouette exactly."),

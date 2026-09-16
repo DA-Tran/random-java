@@ -1,19 +1,27 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Hide a word list in a grid of letters, then solve it back.</p>
+  <p class="hint">
+    Words are hidden in all eight directions and cross each other wherever their
+    letters agree. The filler is drawn from the words themselves, so the letter
+    distribution gives nothing away. Solve reveals them and dims the rest.
+  </p>
   <div class="row">
     <label class="field">
-      <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <span>Grid size</span>
+      <input data-field="size" type="number" value="12" min="8" max="16">
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <label class="field">
+      <span>Words (comma separated, blank for the default list)</span>
+      <input data-field="words" placeholder="NONOGRAM, KAKURO, HITORI" autocomplete="off">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New grid</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Find one</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
   </div>
 </div>
 
 <div class="card" data-boot="generate">
-  <h2>Board</h2>
+  <h2>Grid</h2>
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>

@@ -2734,7 +2734,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Hide a word list in a grid of letters, then solve it back.",
     "stack": ""
   },

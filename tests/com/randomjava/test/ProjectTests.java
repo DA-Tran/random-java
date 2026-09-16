@@ -52,6 +52,7 @@ import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.rivercrossing.RiverCrossing;
 import com.randomjava.projects.shikaku.Shikaku;
 import com.randomjava.projects.waterjug.WaterJug;
+import com.randomjava.projects.wordsearchgenerator.WordSearchGenerator;
 import com.randomjava.projects.slitherlink.Slitherlink;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
 import com.randomjava.projects.sokoban.Sokoban;
@@ -1005,6 +1006,15 @@ final class ProjectTests {
             }
         }
         return blanks;
+    }
+
+    private static boolean spellsOut(WordSearchGenerator puzzle, String word, int[] at) {
+        for (int i = 0; i < word.length(); i++) {
+            if (puzzle.letterAt(at[0] + at[2] * i, at[1] + at[3] * i) != word.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean refused(Runnable action) {
@@ -3149,6 +3159,56 @@ final class ProjectTests {
             t.check("a click on a clue is ignored rather than refused",
                     ok(call("skyscrapers", "place", "row", 0, "col", 0)));
             t.check("the api solves", ok(call("skyscrapers", "solve")));
+        });
+
+        h.group("249 Word Search Generator", t -> {
+            List<String> list = List.of("NONOGRAM", "KAKURO", "HITORI", "SUDOKU", "KENKEN");
+
+            // Hiding and finding are deliberately separate: find() reads the
+            // letters off the grid rather than consulting the placements, so
+            // it can only pass if the words are genuinely there.
+            int unplaced = 0;
+            int notFindable = 0;
+            for (int seed = 0; seed < 25; seed++) {
+                WordSearchGenerator puzzle =
+                        new WordSearchGenerator(new java.util.Random(seed));
+                puzzle.generate(12, list);
+                unplaced += list.size() - puzzle.placed().size();
+                for (String word : list) {
+                    if (puzzle.find(word) == null) {
+                        notFindable++;
+                    }
+                }
+            }
+            t.equal("every word fits in a 12x12", 0, unplaced);
+            t.equal("and every one can be read back off the grid", 0, notFindable);
+
+            WordSearchGenerator puzzle = new WordSearchGenerator(new java.util.Random(7));
+            puzzle.generate(10, List.of("LOOP", "GRID", "BRIDGE"));
+            int[] at = puzzle.find("BRIDGE");
+            t.check("a hidden word is found", at != null);
+            t.check("and the letters really are there", at == null || spellsOut(
+                    puzzle, "BRIDGE", at));
+            t.check("a word that was never hidden is not found",
+                    puzzle.find("ZEBRA") == null);
+            t.equal("solving finds them all", "Found all 3 words.", puzzle.solve());
+
+            // Overlapping is what makes the grid interlock, so it has to be
+            // allowed where the letters agree and refused where they do not.
+            t.check("a word may cross one that shares its letter there",
+                    puzzle.canPlace(String.valueOf(puzzle.letterAt(0, 0)), 0, 0, 0, 1));
+            t.check("a word running off the edge does not fit",
+                    !puzzle.canPlace("BRIDGE", 0, 8, 0, 1));
+
+            t.check("a word longer than the grid is refused",
+                    refused(() -> puzzle.generate(8, List.of("EXTRAORDINARILY"))));
+            t.check("an empty word list is refused",
+                    refused(() -> puzzle.generate(10, List.of("a"))));
+            t.check("an unplayable size is refused",
+                    refused(() -> puzzle.generate(3, list)));
+            t.check("the api generates", ok(call("word-search-generator", "generate",
+                    "size", 12)));
+            t.check("the api solves", ok(call("word-search-generator", "solve")));
         });
 
         h.group("248 Knights Tour", t -> {
