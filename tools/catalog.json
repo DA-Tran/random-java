@@ -2657,7 +2657,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Arrange numbers so every row, column and diagonal adds to the same total.",
     "stack": ""
   },

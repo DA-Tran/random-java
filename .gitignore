@@ -11,3 +11,7 @@ openJdk-25/
 .vscode/
 target/
 TODO.md
+
+# Python bytecode from tools/
+__pycache__/
+*.pyc
