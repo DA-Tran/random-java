@@ -1,0 +1,44 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Each digit once per row and once per column. The signs between cells point
+    at the smaller one: <code>&lt;</code> and <code>&gt;</code> across,
+    <code>^</code> means the cell above is smaller, <code>v</code> the one
+    below. Pick a digit, then click a cell to place it - clicking the same
+    digit again clears the cell.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <input data-field="size" type="number" value="5" min="4" max="7">
+    </label>
+    <label class="field">
+      <span>Digit to place</span>
+      <input data-field="value" type="number" value="1" min="1" max="7">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    // Cells sit on even coordinates; the odd ones hold the signs between them
+    // and the server ignores clicks that land there.
+    RJ.send('place', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

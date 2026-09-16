@@ -1,0 +1,41 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Two symbols, # and *. Never three alike in a row or column, an even split in
+    every line, and no two rows or two columns the same. Click a cell to cycle
+    it; the givens do not move.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <select data-field="size">
+        <option value="6">6 x 6</option>
+        <option value="8" selected>8 x 8</option>
+        <option value="10">10 x 10</option>
+        <option value="12">12 x 12</option>
+      </select>
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('cycle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

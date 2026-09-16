@@ -1,0 +1,36 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    Shade cells until no number appears twice in any row or column. Two shaded
+    cells may never touch edge to edge, and everything left unshaded has to stay
+    joined up as one region. Click a cell to shade it, click again to clear it.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <input data-field="size" type="number" value="6" min="4" max="8">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    RJ.send('toggle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>

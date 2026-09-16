@@ -1,0 +1,37 @@
+<div class="card">
+  <h2>Controls</h2>
+  <p class="hint">
+    The numbers are run lengths, in order, with at least one blank between runs.
+    Click a cell to fill it, again to cross it off, again to clear it.
+  </p>
+  <div class="row">
+    <label class="field">
+      <span>Board size</span>
+      <input data-field="size" type="number" value="10" min="5" max="20">
+    </label>
+    <div class="tight"><button data-action="generate" data-primary>New puzzle</button></div>
+    <div class="tight"><button class="ghost" data-action="hint">Hint</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Solve</button></div>
+  </div>
+</div>
+
+<div class="card" data-boot="generate">
+  <h2>Board</h2>
+  <div id="board"></div>
+  <div id="out" class="out"></div>
+</div>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var cell = event.target.closest('#board .cell');
+    if (!cell) { return; }
+    var wrap = cell.parentElement;
+    var match = /repeat\((\d+)/.exec(wrap.style.gridTemplateColumns || '');
+    if (!match) { return; }
+    var columns = parseInt(match[1], 10);
+    var index = Array.prototype.indexOf.call(wrap.children, cell);
+    // Coordinates in the displayed grid, clue margins included. The server
+    // knows how wide those margins are and drops clicks that land in them.
+    RJ.send('cycle', { row: Math.floor(index / columns), col: index % columns });
+  });
+</script>
