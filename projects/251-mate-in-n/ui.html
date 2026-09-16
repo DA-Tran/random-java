@@ -1,19 +1,26 @@
 <div class="card">
   <h2>Controls</h2>
-  <p class="hint">Search a chess position for a forced checkmate in a given number of moves.</p>
+  <p class="hint">
+    Uppercase pieces are White. The search looks for a <em>forced</em> mate -
+    one the defender cannot escape by any reply - rather than merely a strong
+    move, so material and position count for nothing here.
+  </p>
   <div class="row">
     <label class="field">
-      <span>Board size</span>
-      <input data-field="size" type="number" value="12" min="4" max="40">
+      <span>Position</span>
+      <select data-field="puzzle">
+        <option value="0">Back rank, mate in one</option>
+        <option value="1">Ladder, mate in two</option>
+        <option value="2">No mate available</option>
+      </select>
     </label>
-    <div class="tight"><button data-action="generate" data-primary>Generate</button></div>
-    <div class="tight"><button class="ghost" data-action="step">Step</button></div>
-    <div class="tight"><button class="quiet" data-action="solve">Run</button></div>
+    <div class="tight"><button data-action="generate" data-primary>Load</button></div>
+    <div class="tight"><button class="quiet" data-action="solve">Find mate</button></div>
   </div>
 </div>
 
 <div class="card" data-boot="generate">
-  <h2>Board</h2>
+  <h2>Position</h2>
   <div id="board"></div>
   <div id="out" class="out"></div>
 </div>

@@ -38,6 +38,7 @@ import com.randomjava.projects.minesweeper.Minesweeper;
 import com.randomjava.projects.game2048.Game2048;
 import com.randomjava.projects.lightsout.LightsOut;
 import com.randomjava.projects.magicsquare.MagicSquare;
+import com.randomjava.projects.mateinn.MateInN;
 import com.randomjava.projects.binarypuzzle.BinaryPuzzle;
 import com.randomjava.projects.cryptarithm.Cryptarithm;
 import com.randomjava.projects.futoshiki.Futoshiki;
@@ -3223,6 +3224,45 @@ final class ProjectTests {
             t.check("the api generates", ok(call("word-search-generator", "generate",
                     "size", 12)));
             t.check("the api solves", ok(call("word-search-generator", "solve")));
+        });
+
+        h.group("251 Mate In N", t -> {
+            // Depth counts the attacker's moves, not plies, which is what the
+            // puzzle means by "mate in two".
+            MateInN back = new MateInN();
+            back.load(MateInN.backRank());
+            t.equal("the back rank position is mate in one",
+                    1, back.shortestMate(3));
+
+            MateInN ladder = new MateInN();
+            ladder.load(MateInN.ladder());
+            t.equal("the ladder position is mate in two", 2, ladder.shortestMate(3));
+            t.check("and it is not mate in one", ladder.findMate(1) == null);
+
+            // The important negative. Basing the search on "the defender has
+            // no legal moves" would call stalemate a win, so a position with
+            // no forced mate has to come back with nothing.
+            MateInN drawn = new MateInN();
+            drawn.load(MateInN.drawn());
+            t.equal("a position with no forced mate reports none",
+                    0, drawn.shortestMate(2));
+            t.check("and offers no move", drawn.findMate(1) == null);
+
+            // Solving plays the mating move, so the board should change and
+            // the report should name it.
+            MateInN playing = new MateInN();
+            playing.load(MateInN.backRank());
+            String before = new String(playing.cells()[0]);
+            String said = playing.solve();
+            t.contains("solving reports a mate in one", said, "Mate in 1");
+            t.check("it names the rook lift to the eighth", said.contains("e1e8"));
+            t.check("and the board actually changes",
+                    !new String(playing.cells()[0]).equals(before));
+            t.check("the search visited some positions", playing.nodes() > 0);
+
+            t.equal("the library offers three positions", 3, MateInN.library().size());
+            t.check("the api loads", ok(call("mate-in-n", "generate", "puzzle", 1)));
+            t.check("the api solves", ok(call("mate-in-n", "solve")));
         });
 
         h.group("248 Knights Tour", t -> {

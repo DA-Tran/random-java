@@ -292,7 +292,7 @@ public final class Catalog {
             new Meta(248, "knights-tour", "Knights Tour", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Move a knight to every square on the board exactly once.", "", true),
             new Meta(249, "word-search-generator", "Word Search Generator", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Hide a word list in a grid of letters, then solve it back.", "", true),
             new Meta(250, "tangram", "Tangram", "Logic and Puzzle Games", Kind.GRID, Difficulty.INTERMEDIATE, "Fit seven flat shapes together to match a silhouette exactly.", "", false),
-            new Meta(251, "mate-in-n", "Mate In N", "Logic and Puzzle Games", Kind.GRID, Difficulty.ADVANCED, "Search a chess position for a forced checkmate in a given number of moves.", "", false));
+            new Meta(251, "mate-in-n", "Mate In N", "Logic and Puzzle Games", Kind.GRID, Difficulty.ADVANCED, "Search a chess position for a forced checkmate in a given number of moves.", "", true));
 
     /** Slug to fully-qualified class name. Strings, so nothing is loaded. */
     private static final String[][] CLASS_NAMES = {

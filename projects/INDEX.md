@@ -1,6 +1,6 @@
 # All 251 projects
 
-152 implemented, 99 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
+153 implemented, 98 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
 
 Tick a box when you graduate one out of scaffold state, and flip its `done` flag in [`tools/catalog.py`](../tools/catalog.py) so the hub and the launcher agree.
 
@@ -320,4 +320,4 @@ Tick a box when you graduate one out of scaffold state, and flip its `done` flag
 - [x] **248** [Knights Tour](248-knights-tour/) `grid` `intermediate` - Move a knight to every square on the board exactly once.
 - [x] **249** [Word Search Generator](249-word-search-generator/) `grid` `intermediate` - Hide a word list in a grid of letters, then solve it back.
 - [ ] **250** [Tangram](250-tangram/) `grid` `intermediate` - Fit seven flat shapes together to match a silhouette exactly.
-- [ ] **251** [Mate In N](251-mate-in-n/) `grid` `advanced` - Search a chess position for a forced checkmate in a given number of moves.
+- [x] **251** [Mate In N](251-mate-in-n/) `grid` `advanced` - Search a chess position for a forced checkmate in a given number of moves.

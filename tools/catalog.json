@@ -2756,7 +2756,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "advanced",
-    "done": false,
+    "done": true,
     "description": "Search a chess position for a forced checkmate in a given number of moves.",
     "stack": ""
   }
