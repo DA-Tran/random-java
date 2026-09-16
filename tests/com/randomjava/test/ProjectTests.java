@@ -52,6 +52,7 @@ import com.randomjava.projects.pegsolitaire.PegSolitaire;
 import com.randomjava.projects.rivercrossing.RiverCrossing;
 import com.randomjava.projects.shikaku.Shikaku;
 import com.randomjava.projects.waterjug.WaterJug;
+import com.randomjava.projects.zebrapuzzle.ZebraPuzzle;
 import com.randomjava.projects.wordsearchgenerator.WordSearchGenerator;
 import com.randomjava.projects.slitherlink.Slitherlink;
 import com.randomjava.projects.skyscrapers.Skyscrapers;
@@ -3276,6 +3277,57 @@ final class ProjectTests {
             t.check("an off-board start is refused", refused(() -> board.reset(6, 9, 0)));
             t.check("the api generates", ok(call("knights-tour", "generate", "size", 6)));
             t.check("the api solves", ok(call("knights-tour", "solve")));
+        });
+
+        h.group("244 Zebra Puzzle", t -> {
+            int[][] answer = ZebraPuzzle.solve();
+            t.check("the clues have an answer", answer != null);
+
+            // The two questions the 1962 puzzle actually asks.
+            t.equal("the Japanese owns the zebra", "japanese",
+                    ZebraPuzzle.whoHas(answer, 4, "zebra"));
+            t.equal("and the Norwegian drinks the water", "norwegian",
+                    ZebraPuzzle.whoHas(answer, 2, "water"));
+            t.equal("exactly one arrangement satisfies every clue",
+                    1, ZebraPuzzle.countSolutions(3));
+
+            // The published arrangement, house by house.
+            t.equal("house one is yellow", "yellow",
+                    ZebraPuzzle.valueIn(answer, 0, 0));
+            t.equal("house three is red", "red", ZebraPuzzle.valueIn(answer, 0, 2));
+            t.equal("house five is green", "green", ZebraPuzzle.valueIn(answer, 0, 4));
+            t.equal("the Englishman is in house three", "english",
+                    ZebraPuzzle.valueIn(answer, 1, 2));
+
+            // Modelling each category as a permutation makes "no value twice"
+            // true by construction, so the answer cannot repeat one.
+            int repeats = 0;
+            for (int category = 0; category < ZebraPuzzle.CATEGORIES.length; category++) {
+                boolean[] seen = new boolean[5];
+                for (int house = 0; house < 5; house++) {
+                    String value = ZebraPuzzle.valueIn(answer, category, house);
+                    int index = java.util.Arrays.asList(
+                            ZebraPuzzle.VALUES[category]).indexOf(value);
+                    if (index < 0 || seen[index]) {
+                        repeats++;
+                    } else {
+                        seen[index] = true;
+                    }
+                }
+            }
+            t.equal("every category is a genuine permutation of its five values",
+                    0, repeats);
+
+            // The anchors: without these the clues would only fix the
+            // arrangement up to a relabelling.
+            t.equal("milk is drunk in the middle house", "milk",
+                    ZebraPuzzle.valueIn(answer, 2, 2));
+            t.equal("and the Norwegian is in the first", "norwegian",
+                    ZebraPuzzle.valueIn(answer, 1, 0));
+
+            t.equal("there are fourteen clues", 14, ZebraPuzzle.clues().size());
+            t.check("the api answers", ok(call("zebra-puzzle", "compute",
+                    "input", "zebra")));
         });
 
         h.group("245 River Crossing", t -> {

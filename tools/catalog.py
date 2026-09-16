@@ -675,7 +675,7 @@ PROJECTS = [
      "Arrange numbers so every row, column and diagonal adds to the same total."),
     (243, "cryptarithm", "TOOL", True,
      "Solve puzzles like SEND + MORE = MONEY by assigning a digit to each letter."),
-    (244, "zebra-puzzle", "TOOL", False,
+    (244, "zebra-puzzle", "TOOL", True,
      "Work out who owns the zebra from a list of constraints, by elimination."),
     (245, "river-crossing", "GRID", True,
      "Get everyone across without leaving the wrong pair alone together."),

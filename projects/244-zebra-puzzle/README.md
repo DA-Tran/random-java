@@ -7,7 +7,7 @@
 | Category | Logic and Puzzle Games |
 | Difficulty | Advanced |
 | Shape | TOOL |
-| Status | scaffold |
+| Status | implemented |
 | Slug | `zebra-puzzle` |
 
 
@@ -34,7 +34,7 @@ Direct link once the hub is up: <http://localhost:8080/p/zebra-puzzle/>
 
 ## What to implement
 
-`compute(String input)` is the only method that matters. Everything else is wiring.
+Already implemented. Read the source for how it works.
 
 Both front ends call the same methods, so there is nothing to keep in sync:
 implement once and the terminal and the browser both pick it up.

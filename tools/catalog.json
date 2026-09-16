@@ -2679,7 +2679,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "TOOL",
     "difficulty": "advanced",
-    "done": false,
+    "done": true,
     "description": "Work out who owns the zebra from a list of constraints, by elimination.",
     "stack": ""
   },
