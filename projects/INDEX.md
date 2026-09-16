@@ -1,6 +1,6 @@
 # All 251 projects
 
-147 implemented, 104 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
+148 implemented, 103 runnable scaffolds. A scaffold compiles, runs in the terminal and answers its web page; what it does not yet have is the real logic.
 
 Tick a box when you graduate one out of scaffold state, and flip its `done` flag in [`tools/catalog.py`](../tools/catalog.py) so the hub and the launcher agree.
 
@@ -317,7 +317,7 @@ Tick a box when you graduate one out of scaffold state, and flip its `done` flag
 - [ ] **245** [River Crossing](245-river-crossing/) `grid` `intermediate` - Get everyone across without leaving the wrong pair alone together.
 - [x] **246** [Water Jug](246-water-jug/) `tool` `intermediate` - Measure an exact amount using jugs that have no markings.
 - [ ] **247** [Rush Hour](247-rush-hour/) `grid` `advanced` - Slide blocking cars aside to drive the red car out of the jam.
-- [ ] **248** [Knights Tour](248-knights-tour/) `grid` `intermediate` - Move a knight to every square on the board exactly once.
+- [x] **248** [Knights Tour](248-knights-tour/) `grid` `intermediate` - Move a knight to every square on the board exactly once.
 - [ ] **249** [Word Search Generator](249-word-search-generator/) `grid` `intermediate` - Hide a word list in a grid of letters, then solve it back.
 - [ ] **250** [Tangram](250-tangram/) `grid` `intermediate` - Fit seven flat shapes together to match a silhouette exactly.
 - [ ] **251** [Mate In N](251-mate-in-n/) `grid` `advanced` - Search a chess position for a forced checkmate in a given number of moves.

@@ -2723,7 +2723,7 @@
     "category": "Logic and Puzzle Games",
     "kind": "GRID",
     "difficulty": "intermediate",
-    "done": false,
+    "done": true,
     "description": "Move a knight to every square on the board exactly once.",
     "stack": ""
   },

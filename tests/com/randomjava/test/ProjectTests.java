@@ -45,6 +45,7 @@ import com.randomjava.projects.hashiwokakero.Hashiwokakero;
 import com.randomjava.projects.hitori.Hitori;
 import com.randomjava.projects.kakuro.Kakuro;
 import com.randomjava.projects.kenken.Kenken;
+import com.randomjava.projects.knightstour.KnightsTour;
 import com.randomjava.projects.nurikabe.Nurikabe;
 import com.randomjava.projects.nonogram.Nonogram;
 import com.randomjava.projects.pegsolitaire.PegSolitaire;
@@ -3147,6 +3148,73 @@ final class ProjectTests {
             t.check("a click on a clue is ignored rather than refused",
                     ok(call("skyscrapers", "place", "row", 0, "col", 0)));
             t.check("the api solves", ok(call("skyscrapers", "solve")));
+        });
+
+        h.group("248 Knights Tour", t -> {
+            // A knight alternates colours, so a tour of an odd board - where
+            // the colours are unequal - must start on the majority colour,
+            // which is the colour of the corners. That rules out half the
+            // starting squares by counting, before any search.
+            t.check("a corner start is allowed on a 5x5",
+                    KnightsTour.startCanWork(5, 0, 0));
+            t.check("its neighbour is not", !KnightsTour.startCanWork(5, 0, 1));
+            t.check("on an even board either colour will do",
+                    KnightsTour.startCanWork(6, 0, 0) && KnightsTour.startCanWork(6, 0, 1));
+            t.check("boards of side 3 have no tour at all", !KnightsTour.tourExists(3));
+            t.check("nor side 4", !KnightsTour.tourExists(4));
+
+            // The counting argument predicts exactly how many starts work:
+            // (n*n+1)/2 on an odd board, all of them on an even one.
+            int worked = 0;
+            int ruledOut = 0;
+            int surprises = 0;
+            for (int row = 0; row < 5; row++) {
+                for (int column = 0; column < 5; column++) {
+                    int[][] found = KnightsTour.tour(5, row, column);
+                    if (found == null) {
+                        ruledOut++;
+                        if (KnightsTour.startCanWork(5, row, column)) {
+                            surprises++;   // allowed by colour but no tour found
+                        }
+                    } else {
+                        worked++;
+                        if (!KnightsTour.isTour(found)) {
+                            surprises++;
+                        }
+                    }
+                }
+            }
+            t.equal("thirteen of the 5x5 squares start a tour", 13, worked);
+            t.equal("and the other twelve are the wrong colour", 12, ruledOut);
+            t.equal("with nothing unexplained either way", 0, surprises);
+
+            // Warnsdorff plus backtracking finds one from every legal start.
+            int failures = 0;
+            for (int row = 0; row < 6; row++) {
+                for (int column = 0; column < 6; column++) {
+                    int[][] found = KnightsTour.tour(6, row, column);
+                    if (found == null || !KnightsTour.isTour(found)) {
+                        failures++;
+                    }
+                }
+            }
+            t.equal("every square of a 6x6 starts a genuine tour", 0, failures);
+
+            // isTour has to be strict about more than coverage.
+            int[][] notKnightMoves = new int[5][5];
+            int step = 1;
+            for (int row = 0; row < 5; row++) {
+                for (int column = 0; column < 5; column++) {
+                    notKnightMoves[row][column] = step++;
+                }
+            }
+            t.check("reading order is not a tour", !KnightsTour.isTour(notKnightMoves));
+
+            KnightsTour board = new KnightsTour();
+            t.check("an unplayable board is refused", refused(() -> board.reset(3, 0, 0)));
+            t.check("an off-board start is refused", refused(() -> board.reset(6, 9, 0)));
+            t.check("the api generates", ok(call("knights-tour", "generate", "size", 6)));
+            t.check("the api solves", ok(call("knights-tour", "solve")));
         });
 
         h.group("246 Water Jug", t -> {

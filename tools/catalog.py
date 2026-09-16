@@ -683,7 +683,7 @@ PROJECTS = [
      "Measure an exact amount using jugs that have no markings."),
     (247, "rush-hour", "GRID", False,
      "Slide blocking cars aside to drive the red car out of the jam."),
-    (248, "knights-tour", "GRID", False,
+    (248, "knights-tour", "GRID", True,
      "Move a knight to every square on the board exactly once."),
     (249, "word-search-generator", "GRID", False,
      "Hide a word list in a grid of letters, then solve it back."),
